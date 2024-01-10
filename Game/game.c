@@ -194,7 +194,7 @@ void GAME_changeTurn(void) {
 	}
 	GAME_drawNewTimer(nowPlaying);
 
-	GAME_findMovements(players[nowPlaying], lastP);
+	if(players[nowPlaying]->playerType != PLAYER_ai) GAME_findMovements(players[nowPlaying], lastP);
 
 	GAME_continueTimersAndRIT();
 }
