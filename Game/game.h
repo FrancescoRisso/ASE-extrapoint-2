@@ -4,12 +4,15 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "../CAN/CAN.h"
 #include "../GLCD/GLCD.h"
 #include "../RIT/RIT.h"
 #include "../timers/timers.h"
 #include "../utils/abs.h"
 #include "../utils/bool.h"
+#include "directions.h"
 #include "lpc17xx.h"
+#include "menu.h"
 
 
 #define gridSize 7
@@ -45,8 +48,6 @@
 
 #define gameTextsY 255
 
-
-typedef enum { DIR_up, DIR_down, DIR_left, DIR_right, DIR_none } directions;
 
 typedef enum { GAME_chooseNumBoards, GAME_AIorPlayer, GAME_game } gameStatuses;
 
@@ -138,31 +139,21 @@ void GAME_endOfTurn(void);
 
 
 /*
-	GAME_choiceMenu
+	GAME_oneBoardGame
 	---------------------------------------------------------------------
-	Displays a menu with two choices
-	---------------------------------------------------------------------
-	PARAMETERS:
-		- row1: the first row of the prompt
-		- row2: the second row of the prompt
-		- opt1: the first option
-		- opt2: the second option
-	---------------------------------------------------------------------
-	OUTPUT:
-		-
+	Sets the game to use a sigle board
 */
-void GAME_choiceMenu(char *row1, char *row2, char *opt1, char *opt2);
+void GAME_oneBoardGame(void);
 
 
 /*
-	GAME_chooseMenu
+	GAME_twoBoardGame
 	---------------------------------------------------------------------
-	Allows the user to choose an option of a menu
+	Sets the game to use two boards
 	---------------------------------------------------------------------
 	PARAMETERS:
-		- dir: the option choosen (values other than DIR_up and DIR_down
-			are ignored)
+		- send: if the other board shoudl be notified
 */
-void GAME_chooseMenu(directions dir);
+void GAME_twoBoardGame(bool send);
 
 #endif

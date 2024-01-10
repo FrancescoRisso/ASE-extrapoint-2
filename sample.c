@@ -42,7 +42,7 @@ int main(void) {
 	init_RIT(TIME_50MS);
 	enable_RIT();
 
-	GAME_choiceMenu("Select the", "GAME MODE", "1 board", "2 boards");
+	MENU_boardChoiceMenu();
 	// GAME_init();
 
 	POW_setPowerMode(POW_sleep);

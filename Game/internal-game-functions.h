@@ -1,6 +1,8 @@
 #ifndef __INTERNAL_GAME_H
 #define __INTERNAL_GAME_H
 
+#include "game.h"
+
 
 /*
 	GAME_drawTile
@@ -329,17 +331,5 @@ bool GAME_checkReachability(player p, player other);
 	Passes the turn to the opposite player
 */
 void GAME_changeTurn(void);
-
-
-/*
-	GAME_choiceOption
-	---------------------------------------------------------------------
-	Draws an option of the choice menu
-	---------------------------------------------------------------------
-	PARAMETERS:
-		- optionNo: 0 or 1, if it is the first or second option
-		- selected: if it is currently selected
-*/
-void GAME_choiceOption(int optionNo, bool selected);
 
 #endif

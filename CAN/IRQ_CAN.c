@@ -13,13 +13,24 @@
  * Copyright (c) 2009 Keil - An ARM Company. All rights reserved.
  *----------------------------------------------------------------------------*/
 
+#include "../game/game.h"
 #include "CAN.h"
+
+
+extern int myID;
+extern bool dualBoard;
 
 /*----------------------------------------------------------------------------
   CAN interrupt handler
  *----------------------------------------------------------------------------*/
 void CAN_IRQHandler(void) {
 	int msg;
-	msg = CAN_rdMsg();        /* Read the message */
+	msg = CAN_rdMsg(); /* Read the message */
+
+	if(myID == -1) {
+		myID = 1;
+		GAME_twoBoardGame(false);
+	}
+
 	LPC_CAN1->CMR = (1 << 2); /* Release receive buffer */
 }

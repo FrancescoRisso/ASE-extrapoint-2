@@ -289,7 +289,7 @@ void CAN_Init(void) {
 	CAN_setup(1); /* setup CAN Controller #1 */
 
 	CAN_wrFilter(1, 1, STANDARD_FORMAT);
-	CAN_wrFilter(1, 2, STANDARD_FORMAT);
+	CAN_wrFilter(1, 0, STANDARD_FORMAT);
 
 	CAN_start(1); /* start CAN Controller #1 */
 

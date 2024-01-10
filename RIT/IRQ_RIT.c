@@ -40,10 +40,13 @@ void RIT_IRQHandler(void) {
 		for(dir = 0; dir < 4; dir++)
 			if(JOY_updateStatus((JOY_direction) dir) == JOY_press) switch(gameStatus) {
 					case GAME_game: GAME_move((directions) dir); break;
-					default: GAME_chooseMenu((directions) dir); break;
+					default: MENU_choose((directions) dir); break;
 				}
 
-		if(JOY_updateStatus(JOY_centerPress) == JOY_press) GAME_endOfTurn();
+		if(JOY_updateStatus(JOY_centerPress) == JOY_press) switch(gameStatus) {
+				case GAME_chooseNumBoards: MENU_confirmChoice(); break;
+				case GAME_game: GAME_endOfTurn(); break;
+			}
 	}
 
 	if(int0Enabled) BTN_updateStatus(BTN_int0);

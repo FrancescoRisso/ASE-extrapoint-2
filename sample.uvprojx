@@ -473,6 +473,21 @@
               <FileType>1</FileType>
               <FilePath>.\Game\tmp.c</FilePath>
             </File>
+            <File>
+              <FileName>menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Game\menu.c</FilePath>
+            </File>
+            <File>
+              <FileName>menu.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Game\menu.h</FilePath>
+            </File>
+            <File>
+              <FileName>directions.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Game\directions.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
