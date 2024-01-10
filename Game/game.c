@@ -209,6 +209,7 @@ void GAME_start(void) {
 	int0Enabled = false;
 	joystickEnabled = true;
 	key1Enabled = true;
+	nowPlaying = 1;
 	GAME_changeTurn();
 	TIMER_enable(TIMER_0);
 }
@@ -362,14 +363,11 @@ void GAME_end(player winner) {
 void GAME_init(void) {
 	LCD_Clear(backgroundColor);
 
-	if(!isFirstGame) numInsertedWalls = 0;
+	numInsertedWalls = 0;
 
 	GAME_drawEmptyGrid();
 	GAME_initPlayers();
 	GAME_drawGameTexts();
-
-	GAME_tellToStart();
-	init_RIT(TIME_50MS);
 
 	NVIC_SetPriority(RIT_IRQn, 2);
 	NVIC_SetPriority(TIMER0_IRQn, 1);
