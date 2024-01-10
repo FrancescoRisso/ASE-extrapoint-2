@@ -34,6 +34,7 @@
 
 #define backgroundColor White
 #define textColor Black
+#define selectedMenuColor Yellow
 
 
 #define timerX 130
@@ -47,6 +48,8 @@
 
 typedef enum { DIR_up, DIR_down, DIR_left, DIR_right, DIR_none } directions;
 
+typedef enum { GAME_chooseNumBoards, GAME_AIorPlayer, GAME_game } gameStatuses;
+
 
 typedef struct {
 	int r, c, finalR;
@@ -56,7 +59,7 @@ typedef struct {
 	int color;
 } player_t;
 
-typedef player_t* player;
+typedef player_t *player;
 
 
 typedef struct {
@@ -133,5 +136,33 @@ void GAME_redrawCellsAfterText(void);
 */
 void GAME_endOfTurn(void);
 
+
+/*
+	GAME_choiceMenu
+	---------------------------------------------------------------------
+	Displays a menu with two choices
+	---------------------------------------------------------------------
+	PARAMETERS:
+		- row1: the first row of the prompt
+		- row2: the second row of the prompt
+		- opt1: the first option
+		- opt2: the second option
+	---------------------------------------------------------------------
+	OUTPUT:
+		-
+*/
+void GAME_choiceMenu(char *row1, char *row2, char *opt1, char *opt2);
+
+
+/*
+	GAME_chooseMenu
+	---------------------------------------------------------------------
+	Allows the user to choose an option of a menu
+	---------------------------------------------------------------------
+	PARAMETERS:
+		- dir: the option choosen (values other than DIR_up and DIR_down
+			are ignored)
+*/
+void GAME_chooseMenu(directions dir);
 
 #endif

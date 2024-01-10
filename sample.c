@@ -21,7 +21,6 @@
 #include "RIT/RIT.h"
 #include "buttons/buttons.h"
 #include "game/game.h"
-#include "led/led.h"
 #include "timers/timers.h"
 #include "utils/power.h"
 
@@ -40,7 +39,11 @@ int main(void) {
 
 	CAN_Init();
 
-	GAME_init();
+	init_RIT(TIME_50MS);
+	enable_RIT();
+
+	GAME_choiceMenu("Select the", "GAME MODE", "1 board", "2 boards");
+	// GAME_init();
 
 	POW_setPowerMode(POW_sleep);
 

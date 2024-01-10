@@ -23,6 +23,11 @@ extern bool int0Enabled;
 extern bool key1Enabled;
 extern bool key2Enabled;
 
+gameStatuses gameStatus = GAME_chooseNumBoards;
+
+char choiceOptions[2][30];
+directions choosenOption = DIR_none;
+
 void GAME_drawTile(int r, int c, int color) {
 	int left, right, top, bottom, wall;
 
@@ -672,4 +677,42 @@ bool GAME_checkReachability(player p, player other) {
 
 	--numInsertedWalls;
 	return res;
+}
+
+
+void GAME_choiceMenu(char *row1, char *row2, char *opt1, char *opt2) {
+	LCD_Clear(backgroundColor);
+
+	GUI_Text((240 - 8 * strlen(row1)) / 2, 110, (uint8_t *) row1, textColor, backgroundColor);
+	GUI_Text((240 - 8 * strlen(row2)) / 2, 130, (uint8_t *) row2, textColor, backgroundColor);
+
+	memcpy(choiceOptions[0], opt1, strlen(opt1));
+	memcpy(choiceOptions[1], opt2, strlen(opt2));
+
+	GAME_choiceOption(0, false);
+	GAME_choiceOption(1, false);
+}
+
+
+void GAME_choiceOption(int optionNo, bool selected) {
+	int top = optionNo == 0 ? 160 : 200;
+	int left = 40;
+	int color = selected ? selectedMenuColor : backgroundColor;
+	char *text = choiceOptions[optionNo];
+
+	LCD_drawRect(left, 240 - left, top, top + 30, textColor, color);
+	GUI_Text((240 - 8 * strlen(text)) / 2, top + 10, (uint8_t *) text, textColor, color);
+}
+
+
+void GAME_chooseMenu(directions dir) {
+	if(dir == DIR_up) {
+		choosenOption = DIR_up;
+		GAME_choiceOption(0, true);
+		GAME_choiceOption(1, false);
+	} else if(dir == DIR_down) {
+		choosenOption = DIR_down;
+		GAME_choiceOption(0, false);
+		GAME_choiceOption(1, true);
+	}
 }

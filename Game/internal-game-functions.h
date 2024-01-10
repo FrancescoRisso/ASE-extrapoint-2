@@ -331,4 +331,15 @@ bool GAME_checkReachability(player p, player other);
 void GAME_changeTurn(void);
 
 
+/*
+	GAME_choiceOption
+	---------------------------------------------------------------------
+	Draws an option of the choice menu
+	---------------------------------------------------------------------
+	PARAMETERS:
+		- optionNo: 0 or 1, if it is the first or second option
+		- selected: if it is currently selected
+*/
+void GAME_choiceOption(int optionNo, bool selected);
+
 #endif

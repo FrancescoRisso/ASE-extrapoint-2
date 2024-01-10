@@ -13,10 +13,8 @@
  * Copyright (c) 2009 Keil - An ARM Company. All rights reserved.
  *----------------------------------------------------------------------------*/
 
-#include "../led/led.h"
 #include "CAN.h"
 
-	// Ciao Francesco sei molto bravo <3
 /*----------------------------------------------------------------------------
   CAN interrupt handler
  *----------------------------------------------------------------------------*/
@@ -24,5 +22,4 @@ void CAN_IRQHandler(void) {
 	int msg;
 	msg = CAN_rdMsg();        /* Read the message */
 	LPC_CAN1->CMR = (1 << 2); /* Release receive buffer */
-	LED_Out(msg);
 }

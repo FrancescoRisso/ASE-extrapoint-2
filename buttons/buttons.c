@@ -2,12 +2,20 @@
 
 extern bool isFirstGame;
 
+extern gameStatuses gameStatus;
+
 // insert your handlers here
 void myINT0handler() {
-	if(isFirstGame)
-		GAME_start();
-	else
-		GAME_init();
+	switch(gameStatus) {
+		case GAME_chooseNumBoards:  break;
+		case GAME_AIorPlayer: break;
+		case GAME_game:
+			if(isFirstGame)
+				GAME_start();
+			else
+				GAME_init();
+			break;
+	}
 }
 
 void myKEY1handler() {

@@ -26,18 +26,22 @@
 **
 ******************************************************************************/
 
-volatile bool joystickEnabled = false;
-volatile bool int0Enabled = true;
+volatile bool joystickEnabled = true;
+volatile bool int0Enabled = false;
 volatile bool key1Enabled = false;
 volatile bool key2Enabled = false;
+
+extern gameStatuses gameStatus;
 
 void RIT_IRQHandler(void) {
 	int dir;
 
 	if(joystickEnabled) {
 		for(dir = 0; dir < 4; dir++)
-			if(JOY_updateStatus((JOY_direction) dir) == JOY_press)
-					GAME_move((directions) dir);
+			if(JOY_updateStatus((JOY_direction) dir) == JOY_press) switch(gameStatus) {
+					case GAME_game: GAME_move((directions) dir); break;
+					default: GAME_chooseMenu((directions) dir); break;
+				}
 
 		if(JOY_updateStatus(JOY_centerPress) == JOY_press) GAME_endOfTurn();
 	}
