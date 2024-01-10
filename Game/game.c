@@ -244,7 +244,7 @@ void GAME_findMovements(player p, player other) {
 	for(dir = (directions) 0; dir < 4; dir++) {
 		res = GAME_findMovementDir(p, dir, other);
 		p->availableMovement[dir] = res;
-		if(res) GAME_drawTileOffset(p->r, p->c, res, dir, availableMoveColor);
+		if(res && p->playerType == PLAYER_player) GAME_drawTileOffset(p->r, p->c, res, dir, availableMoveColor);
 	}
 }
 
