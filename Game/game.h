@@ -52,12 +52,15 @@
 typedef enum { GAME_chooseNumBoards, GAME_AIorPlayer, GAME_game } gameStatuses;
 
 
+typedef enum { PLAYER_player, PLAYER_ai, PLAYER_otherBoard } playerTypes;
+
 typedef struct {
 	int r, c, finalR;
 	int availableMovement[4];
 	directions choosenMovement;
 	int remainingWalls;
 	int color;
+	playerTypes playerType;
 } player_t;
 
 typedef player_t *player;
@@ -155,5 +158,17 @@ void GAME_oneBoardGame(void);
 		- send: if the other board shoudl be notified
 */
 void GAME_twoBoardGame(bool send);
+
+
+/*
+	GAME_setPlayerType
+	---------------------------------------------------------------------
+	Sets if the player/enemy (dual/mono board) is human or NPC
+	---------------------------------------------------------------------
+	PARAMETERS:
+		- isHuman: if the selected player is a human
+*/
+void GAME_setPlayerType(bool isHuman);
+
 
 #endif

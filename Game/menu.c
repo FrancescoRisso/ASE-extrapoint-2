@@ -79,7 +79,10 @@ void MENU_confirmChoice() {
 				GAME_twoBoardGame(true);
 			else
 				GAME_oneBoardGame();
+			gameStatus = GAME_AIorPlayer;
 			break;
+
+		case GAME_AIorPlayer: GAME_setPlayerType((bool) (choosenOption == DIR_up)); break;
 
 		default: break;
 	}

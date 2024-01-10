@@ -26,6 +26,8 @@ extern bool key2Enabled;
 gameStatuses gameStatus = GAME_chooseNumBoards;
 
 bool dualBoard;
+bool otherPlayerReady = false;
+bool ready;
 
 int myID = -1;
 
@@ -366,18 +368,17 @@ void GAME_init(void) {
 	GAME_initPlayers();
 	GAME_drawGameTexts();
 
-	if(isFirstGame) {
-		GAME_tellToStart();
-		init_RIT(TIME_50MS);
+	GAME_tellToStart();
+	init_RIT(TIME_50MS);
 
-		NVIC_SetPriority(RIT_IRQn, 2);
-		NVIC_SetPriority(TIMER0_IRQn, 1);
+	NVIC_SetPriority(RIT_IRQn, 2);
+	NVIC_SetPriority(TIMER0_IRQn, 1);
 
-		TIMER_setValue(TIMER_0, TIMER_matchReg0, 25000000, TIMER_reset_interrupt);
-		// TIMER_setValue(TIMER_0, TIMER_matchReg0, 100000000, TIMER_reset_interrupt);
-		enable_RIT();
-	} else
-		GAME_start();
+	TIMER_setValue(TIMER_0, TIMER_matchReg0, 25000000, TIMER_reset_interrupt);
+	// TIMER_setValue(TIMER_0, TIMER_matchReg0, 100000000, TIMER_reset_interrupt);
+	enable_RIT();
+
+	GAME_start();
 }
 
 
@@ -683,6 +684,8 @@ bool GAME_checkReachability(player p, player other) {
 
 void GAME_oneBoardGame() {
 	dualBoard = false;
+	MENU_playerTypeMenu();
+	otherPlayerReady = true;
 }
 
 
@@ -691,4 +694,19 @@ void GAME_twoBoardGame(bool send) {
 	myID = 0;
 	if(send) CAN_wrMsg(1);
 	MENU_playerTypeMenu();
+}
+
+
+void GAME_setPlayerType(bool isHuman) {
+	if(dualBoard) {
+		players[myID]->playerType = isHuman ? PLAYER_player : PLAYER_ai;
+		players[(myID + 1) % 2]->playerType = PLAYER_otherBoard;
+		CAN_wrMsg((myID << 24));
+	} else {
+		players[0]->playerType = PLAYER_player;
+		players[1]->playerType = isHuman ? PLAYER_player : PLAYER_ai;
+	}
+
+	ready = true;
+	if(otherPlayerReady) GAME_init();
 }

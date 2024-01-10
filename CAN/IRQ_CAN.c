@@ -19,18 +19,25 @@
 
 extern int myID;
 extern bool dualBoard;
+extern bool otherPlayerReady;
+extern bool ready;
 
 /*----------------------------------------------------------------------------
   CAN interrupt handler
  *----------------------------------------------------------------------------*/
 void CAN_IRQHandler(void) {
 	int msg;
-	msg = CAN_rdMsg(); /* Read the message */
+	msg = CAN_rdMsg();        /* Read the message */
+	LPC_CAN1->CMR = (1 << 2); /* Release receive buffer */
 
 	if(myID == -1) {
 		myID = 1;
 		GAME_twoBoardGame(false);
+		return;
 	}
 
-	LPC_CAN1->CMR = (1 << 2); /* Release receive buffer */
+	if(!otherPlayerReady) {
+		otherPlayerReady = true;
+		if(ready) GAME_init();
+	}
 }
