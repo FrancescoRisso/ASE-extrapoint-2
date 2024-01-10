@@ -15,11 +15,13 @@
 
 #include <stdio.h>
 
+#include "CAN/CAN.h"
 #include "GLCD/GLCD.h"
 #include "LPC17xx.H" /* LPC17xx definitions                */
 #include "RIT/RIT.h"
 #include "buttons/buttons.h"
 #include "game/game.h"
+#include "led/led.h"
 #include "timers/timers.h"
 #include "utils/power.h"
 
@@ -34,7 +36,9 @@ extern uint8_t ScaleFlag;  // <- ScaleFlag needs to visible in order for the emu
 int main(void) {
 	volatile bool a;
 	SystemInit(); /* System Initialization (i.e., PLL)  */
-	LCD_Initialization();	
+	LCD_Initialization();
+
+	CAN_Init();
 
 	GAME_init();
 
