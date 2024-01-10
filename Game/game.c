@@ -380,7 +380,7 @@ void GAME_init(void) {
 }
 
 
-int GAME_encodePlayerMove(int playerID) {
+void GAME_encodePlayerMove(int playerID) {
 	int res = 0;
 	player p = players[playerID];
 
@@ -392,11 +392,11 @@ int GAME_encodePlayerMove(int playerID) {
 	res = (res << 8) + p->r;  // player Y
 	res = (res << 8) + p->c;  // player X
 
-	return res;
+	if(dualBoard && playerID == myID) CAN_wrMsg(res);
 }
 
 
-int GAME_encodeWallPlacement(int playerID) {
+void GAME_encodeWallPlacement(int playerID) {
 	int res = 0;
 
 	if(timerCnt == 0) return GAME_encodeSkipTurn(playerID);
@@ -407,11 +407,11 @@ int GAME_encodeWallPlacement(int playerID) {
 	res = (res << 8) + tmpWall.centerR;  // wall Y
 	res = (res << 8) + tmpWall.centerC;  // wall X
 
-	return res;
+	if(dualBoard && playerID == myID) CAN_wrMsg(res);
 }
 
 
-int GAME_encodeSkipTurn(int playerID) {
+void GAME_encodeSkipTurn(int playerID) {
 	int res = 0;
 
 	if(timerCnt == 0) return ((playerID << 8) + 1) << 16;
@@ -422,7 +422,7 @@ int GAME_encodeSkipTurn(int playerID) {
 	res = (res << 8) + 0;  // Y = 0
 	res = (res << 8) + 0;  // X = 0
 
-	return res;
+	if(dualBoard && playerID == myID) CAN_wrMsg(res);
 }
 
 
