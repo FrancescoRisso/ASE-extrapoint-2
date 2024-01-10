@@ -708,3 +708,37 @@ void GAME_setPlayerType(bool isHuman) {
 	ready = true;
 	if(otherPlayerReady) GAME_init();
 }
+
+
+void GAME_execEncodedMove(int move) {
+	int playerID;
+	int posX, posY;
+	bool isValid, isWall, vert;
+
+	player p;
+
+	playerID = move & 0xFF000000;
+	isWall = (move & 0x00F00000) != 0;
+	vert = (move & 0x000F0000) == 0;
+	isValid = !isWall && !vert;
+	posY = (move & 0x0000FF00) >> 8;
+	posX = move & 0x000000FF;
+
+	p = players[playerID];
+
+	if(isValid) {
+		if(isWall) {
+			tmpWall.centerR = posY;
+			tmpWall.centerC = posX;
+			tmpWall.horiz = !vert;
+			isInsertingWall = true;
+		} else {
+			GAME_drawTile(p->r, p->c, backgroundColor);
+			p->r = posY;
+			p->c = posX;
+			GAME_drawTile(p->r, p->c, p->color);
+		}
+	}
+
+	GAME_endOfTurn();
+}

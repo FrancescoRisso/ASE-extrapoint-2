@@ -39,5 +39,8 @@ void CAN_IRQHandler(void) {
 	if(!otherPlayerReady) {
 		otherPlayerReady = true;
 		if(ready) GAME_init();
+		return;
 	}
+
+	GAME_execEncodedMove(msg);
 }

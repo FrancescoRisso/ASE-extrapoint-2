@@ -171,4 +171,15 @@ void GAME_twoBoardGame(bool send);
 void GAME_setPlayerType(bool isHuman);
 
 
+/*
+	GAME_execEncodedMove
+	---------------------------------------------------------------------
+	Executes a nove encoded with the shared format, and ends the turn
+	---------------------------------------------------------------------
+	PARAMETERS:
+		- move: the encoded move
+*/
+void GAME_execEncodedMove(int move);
+
+
 #endif

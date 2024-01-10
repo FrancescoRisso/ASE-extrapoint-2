@@ -173,42 +173,42 @@ void GAME_drawEmptyGrid(void);
 	GAME_encodePlayerMove
 	---------------------------------------------------------------------
 	Encodes with the custom format the fact that a player moved
+	Then, if the game is being played with two boards and the move was
+	done by "this board"'s player, the encoded value is sent to the other
+	board
 	---------------------------------------------------------------------
 	PARAMETERS:
 		- playerID: the index of the player that just played
-	---------------------------------------------------------------------
-	OUTPUT:
-		- the encoded move
 */
-int GAME_encodePlayerMove(int playerID);
+void GAME_encodePlayerMove(int playerID);
 
 
 /*
 	GAME_encodeWallPlacement
 	---------------------------------------------------------------------
 	Encodes with the custom format the fact that a wall was inserted
+	Then, if the game is being played with two boards and the move was
+	done by "this board"'s player, the encoded value is sent to the other
+	board
 	---------------------------------------------------------------------
 	PARAMETERS:
 		- playerID: the index of the player that just played
-	---------------------------------------------------------------------
-	OUTPUT:
-		- the encoded move
 */
-int GAME_encodeWallPlacement(int playerID);
+void GAME_encodeWallPlacement(int playerID);
 
 
 /*
 	GAME_encodeSkipTurn
 	---------------------------------------------------------------------
 	Encodes with the custom format the fact that a player run out of time
+	Then, if the game is being played with two boards and the move was
+	done by "this board"'s player, the encoded value is sent to the other
+	board
 	---------------------------------------------------------------------
 	PARAMETERS:
 		- playerID: the index of the player that just played
-	---------------------------------------------------------------------
-	OUTPUT:
-		- the encoded move
 */
-int GAME_encodeSkipTurn(int playerID);
+void GAME_encodeSkipTurn(int playerID);
 
 
 /*
