@@ -336,7 +336,7 @@ void GAME_stopTimersAndRIT(void) {
 
 
 void GAME_continueTimersAndRIT(void) {
-	TIMER_enable(TIMER_0);
+	if(players[nowPlaying]->playerType != PLAYER_ai) TIMER_enable(TIMER_0);
 	enable_RIT();
 }
 
