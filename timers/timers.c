@@ -1,12 +1,26 @@
 #include "timers.h"
 
+extern bool dualBoard, handshakeDone;
+extern gameStatuses gameStatus;
+
 // define here your timer handlers
 void myTimer0handler() {
 	GAME_reduceTimer();
 }
 
 void myTimer1handler() {
-	GAME_redrawCellsAfterText();
+	switch(gameStatus) {
+		case GAME_chooseNumBoards:
+			if(!handshakeDone) {
+				dualBoard = false;
+				gameStatus = GAME_AIorPlayer;
+				GAME_oneBoardGame();
+				GAME_notifyMissingBoard();
+			}
+			break;
+		case GAME_AIorPlayer: break;
+		case GAME_game: GAME_redrawCellsAfterText(); break;
+	}
 }
 
 void myTimer2handler() {}

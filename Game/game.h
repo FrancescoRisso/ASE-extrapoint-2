@@ -37,6 +37,7 @@
 
 #define backgroundColor White
 #define textColor Black
+#define errorTextColor Red
 #define selectedMenuColor Yellow
 
 
@@ -180,6 +181,15 @@ void GAME_setPlayerType(bool isHuman);
 		- move: the encoded move
 */
 void GAME_execEncodedMove(int move);
+
+
+/*
+	GAME_notifyMissingBoard
+	---------------------------------------------------------------------
+	Prints a message telling that the match is in single-board mode due
+	to a failed handshake
+*/
+void GAME_notifyMissingBoard();
 
 
 #endif

@@ -77,9 +77,10 @@ void MENU_confirmChoice() {
 		case GAME_chooseNumBoards:
 			if(choosenOption == DIR_down)
 				GAME_twoBoardGame(true);
-			else
+			else {
 				GAME_oneBoardGame();
-			gameStatus = GAME_AIorPlayer;
+				gameStatus = GAME_AIorPlayer;
+			}
 			break;
 
 		case GAME_AIorPlayer: GAME_setPlayerType((bool) (choosenOption == DIR_up)); break;

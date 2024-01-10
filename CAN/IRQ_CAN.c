@@ -21,6 +21,8 @@ extern int myID;
 extern bool dualBoard;
 extern bool otherPlayerReady;
 extern bool ready;
+extern bool handshakeDone;
+extern gameStatuses gameStatus;
 
 /*----------------------------------------------------------------------------
   CAN interrupt handler
@@ -33,6 +35,15 @@ void CAN_IRQHandler(void) {
 	if(myID == -1) {
 		myID = 1;
 		GAME_twoBoardGame(false);
+		handshakeDone = true;
+		CAN_wrMsg(1 << 24);
+		return;
+	}
+
+	if(!handshakeDone) {
+		handshakeDone = true;
+		gameStatus = GAME_AIorPlayer;
+		MENU_playerTypeMenu();
 		return;
 	}
 

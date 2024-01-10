@@ -28,6 +28,7 @@ gameStatuses gameStatus = GAME_chooseNumBoards;
 bool dualBoard;
 bool otherPlayerReady = false;
 bool ready;
+bool handshakeDone = false;
 
 int myID = -1;
 
@@ -690,8 +691,11 @@ void GAME_oneBoardGame() {
 void GAME_twoBoardGame(bool send) {
 	dualBoard = true;
 	myID = 0;
-	if(send) CAN_wrMsg(1);
-	MENU_playerTypeMenu();
+	if(send) {
+		CAN_wrMsg(1);
+		TIMER_setValue(TIMER_1, TIMER_matchReg0, 25000000, TIMER_stop_reset_interrupt);
+		TIMER_enable(TIMER_1);
+	}
 }
 
 
@@ -741,4 +745,15 @@ void GAME_execEncodedMove(int move) {
 	}
 
 	GAME_endOfTurn();
+}
+
+
+void GAME_notifyMissingBoard() {
+	char row1[] = "Playing with a single\0";
+	char row2[] = "board, since no other\0";
+	char row3[] = "board handshaked\0";
+
+	GUI_Text((240 - 8 * strlen(row1)) / 2, 260, (uint8_t *) row1, errorTextColor, backgroundColor);
+	GUI_Text((240 - 8 * strlen(row2)) / 2, 280, (uint8_t *) row2, errorTextColor, backgroundColor);
+	GUI_Text((240 - 8 * strlen(row3)) / 2, 300, (uint8_t *) row3, errorTextColor, backgroundColor);
 }
