@@ -30,6 +30,8 @@ bool otherPlayerReady = false;
 bool ready;
 bool handshakeDone = false;
 
+int lastMove = 1 << 16;
+
 int myID = -1;
 
 void GAME_drawTile(int r, int c, int color) {
@@ -95,6 +97,8 @@ void GAME_reduceTimer(void) {
 	left = timerX + (--timerCnt) * timerWperVal;
 
 	LCD_drawRect(left, right + 1, timerY - 1, timerY + timerH + 1, backgroundColor, backgroundColor);
+
+	if(players[nowPlaying]->playerType == PLAYER_ai) AI_move(timerCnt);
 
 	if(timerCnt == 0) {
 		GAME_movePlayer(GAME_getOppositeDir(players[nowPlaying]->choosenMovement));
@@ -721,10 +725,6 @@ void GAME_setPlayerType(bool isHuman) {
 
 
 void GAME_execEncodedMove(int move) {
-	int playerID;
-	int posX, posY;
-	bool isValid, isWall, vert;
-
 	player p;
 
 	decodeMove();

@@ -488,6 +488,16 @@
               <FileType>5</FileType>
               <FilePath>.\Game\directions.h</FilePath>
             </File>
+            <File>
+              <FileName>AI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Game\AI\AI.c</FilePath>
+            </File>
+            <File>
+              <FileName>AI.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Game\AI\AI.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -10,6 +10,7 @@
 #include "../timers/timers.h"
 #include "../utils/abs.h"
 #include "../utils/bool.h"
+#include "AI/AI.h"
 #include "directions.h"
 #include "lpc17xx.h"
 #include "menu.h"
