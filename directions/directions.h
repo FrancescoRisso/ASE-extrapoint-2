@@ -62,4 +62,24 @@ directions DIR_getPerpendicular(directions dir, bool primary);
 */
 directions DIR_opposite(directions dir);
 
+
+/*
+	DIR_computeFromPoints
+	---------------------------------------------------------------------
+	Computes the direction between two points, that must be at distance 1
+	---------------------------------------------------------------------
+	PARAMETERS:
+		- startR: the row before the movement
+		- startC: the col before the movement
+		- endR: the row after the movement
+		- endC: the col after the movement
+	---------------------------------------------------------------------
+	OUTPUT:
+		- the direction of the movement from start to end, if end is
+			within a 3x3 grid centered in start
+		- DIR_none otherwhise
+*/
+directions DIR_computeFromPoints(int startR, int startC, int endR, int endC);
+
+
 #endif
