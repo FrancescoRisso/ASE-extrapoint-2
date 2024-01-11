@@ -50,6 +50,18 @@
 #define gameTextsY 255
 
 
+#define decodeMove()                            \
+	int playerID;                               \
+	int posX, posY;                             \
+	bool isValid, isWall, vert;                 \
+	playerID = move & 0xFF000000;               \
+	isWall = (bool) ((move & 0x00F00000) != 0); \
+	vert = (bool) ((move & 0x000F0000) == 0);   \
+	isValid = (bool) (!isWall && !vert);        \
+	posY = (move & 0x0000FF00) >> 8;            \
+	posX = move & 0x000000FF;
+
+
 typedef enum { GAME_chooseNumBoards, GAME_AIorPlayer, GAME_game } gameStatuses;
 
 
