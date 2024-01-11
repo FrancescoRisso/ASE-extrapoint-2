@@ -13,6 +13,14 @@
 
 #define randomMoveWithPreviousValid 5
 
+#define randomWeightOfDoingNothing 1
+#define randomWeightOfPlacingWall 3
+#define randomWeightOfMovingToken 2 * randomWeightOfPlacingWall
+
+#define randomWeightOfCorrectDir 10
+#define randomWeightOfWrongDir 2
+#define randomWeightOfUselessDir 3
+
 
 /*
 	AI_random
@@ -53,5 +61,23 @@ void AI_move(int timeLeft);
 		- if some move was done or not
 */
 bool AI_tryMirroringMove(void);
+
+
+/*
+	AI_randomAction
+	---------------------------------------------------------------------
+	Performs a random action between placing a wall, moving the token and
+	skipping the turn
+*/
+void AI_randomAction(void);
+
+
+/*
+	AI_moveRandomly
+	---------------------------------------------------------------------
+	Selects a (valid) random move of the token and executes it
+*/
+void AI_moveRandomly(void);
+
 
 #endif

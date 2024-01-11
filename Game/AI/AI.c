@@ -21,8 +21,8 @@ void AI_move(int timeLeft) {
 	// turn (to emulate a player thinking)
 	// if this is the last second before the timer expires, however,
 	// the move is done with 100% probability
-	if(!moveIsTimerRunout && (timeLeft == 1 || AI_random(1))) {
-		AI_tryMirroringMove();
+	if(!moveIsTimerRunout && (timeLeft == 1 || AI_random(2) == 0)) {
+		if(!AI_tryMirroringMove()) AI_randomAction();
 
 		if(!moveIsTimerRunout) {
 			moveIsTimerRunout = false;
@@ -30,6 +30,7 @@ void AI_move(int timeLeft) {
 		}
 	};
 }
+
 
 bool AI_tryMirroringMove() {
 	directions dir;
@@ -65,4 +66,69 @@ bool AI_tryMirroringMove() {
 
 	GAME_move(dir);
 	return true;
+}
+
+
+void AI_randomAction() {
+	int totWeight, randVal;
+
+	totWeight = randomWeightOfDoingNothing + randomWeightOfMovingToken - 1;
+	if(players[nowPlaying]->remainingWalls != 0) totWeight += randomWeightOfPlacingWall;
+
+	randVal = AI_random(totWeight);
+
+	if(randVal < randomWeightOfDoingNothing) {
+		moveIsTimerRunout = true;
+		return;
+	}
+
+	randVal -= randomWeightOfDoingNothing;
+
+	if(randVal < randomWeightOfMovingToken) {
+		AI_moveRandomly();
+		return;
+	}
+
+	randVal -= randomWeightOfMovingToken;
+
+	// placeWall
+}
+
+void AI_moveRandomly() {
+	int totWeight = 0;
+	int weights[DIR_none];
+	int weightUp, weightDown;
+	int randVal;
+	directions dir;
+
+	if(players[nowPlaying]->finalR == 0) {
+		weightDown = randomWeightOfWrongDir;
+		weightUp = randomWeightOfCorrectDir;
+	} else {
+		weightDown = randomWeightOfCorrectDir;
+		weightUp = randomWeightOfWrongDir;
+	}
+
+	weights[DIR_up] = weightUp;
+	weights[DIR_up_left] = weightUp;
+	weights[DIR_up_right] = weightUp;
+	weights[DIR_down] = weightDown;
+	weights[DIR_down_left] = weightDown;
+	weights[DIR_down_right] = weightDown;
+	weights[DIR_left] = randomWeightOfUselessDir;
+	weights[DIR_right] = randomWeightOfUselessDir;
+
+	for(dir = (directions) 0; dir < DIR_none; dir++)
+		if(players[nowPlaying]->availableMovement[dir] != 0) totWeight += weights[dir];
+
+	randVal = AI_random(totWeight - 1);
+
+	for(dir = (directions) 0; dir < DIR_none; dir++)
+		if(players[nowPlaying]->availableMovement[dir] != 0) {
+			if(randVal < weights[dir]) {
+				GAME_move(dir);
+				return;
+			} else
+				randVal -= weights[dir];
+		}
 }
