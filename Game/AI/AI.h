@@ -5,9 +5,12 @@
 #include "lpc17xx.h"
 
 
+
 #define randomIterations 7
 
-extern int lastMove;
+
+#define randomMoveWithPreviousValid 5
+
 
 /*
 	AI_random
@@ -34,5 +37,19 @@ int AI_random(int max);
 		- timeLeft: the number of seconds left before the time runs out
 */
 void AI_move(int timeLeft);
+
+
+/*
+	AI_tryMirroringMove
+	---------------------------------------------------------------------
+	If the previous opponent's move was a valid one, tries to mirror it.
+	There is a chance that it will not mirror a move, even if it was
+	valid (in order to reduce predictability)
+	This chance is (1 / randomMoveWithPreviousValid)
+	---------------------------------------------------------------------
+	OUTPUT:
+		- if some move was done or not
+*/
+bool AI_tryMirroringMove(void);
 
 #endif

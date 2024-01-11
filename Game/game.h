@@ -52,6 +52,9 @@
 #define gameTextsY 255
 
 
+#define playerPositionHistoryCnt 3
+
+
 #define decodeMove()                            \
 	int playerID;                               \
 	int posX, posY;                             \
@@ -220,6 +223,33 @@ void GAME_stopTimersAndRIT(void);
 	Resumes the timers and RIT's execution
 */
 void GAME_continueTimersAndRIT(void);
+
+
+/*
+	GAME_tmpWallOverlaps
+	---------------------------------------------------------------------
+	Tells if the currently-placed wall overlaps (segmentwise) with some
+	other walls
+	---------------------------------------------------------------------
+	OUTPUT:
+		- if there are overlaps
+*/
+bool GAME_tmpWallOverlaps(void);
+
+
+/*
+	GAME_checkReachability
+	---------------------------------------------------------------------
+	Checks if it is possible for a given player to reach their end
+	---------------------------------------------------------------------
+	PARAMETER:
+		- p: the player where to start
+		- other: the position of the opponent
+	---------------------------------------------------------------------
+	OUTPUT:
+		- if a path exists or not
+*/
+bool GAME_checkReachability(player p, player other);
 
 
 #endif

@@ -262,33 +262,6 @@ bool GAME_wallOverlap(wallPos wall1, wallPos wall2, bool strict);
 
 
 /*
-	GAME_tmpWallOverlaps
-	---------------------------------------------------------------------
-	Tells if the currently-placed wall overlaps (segmentwise) with some
-	other walls
-	---------------------------------------------------------------------
-	OUTPUT:
-		- if there are overlaps
-*/
-bool GAME_tmpWallOverlaps(void);
-
-
-/*
-	GAME_checkReachability
-	---------------------------------------------------------------------
-	Checks if it is possible for a given player to reach their end
-	---------------------------------------------------------------------
-	PARAMETER:
-		- p: the player where to start
-		- other: the position of the opponent
-	---------------------------------------------------------------------
-	OUTPUT:
-		- if a path exists or not
-*/
-bool GAME_checkReachability(player p, player other);
-
-
-/*
 	GAME_changeTurn
 	---------------------------------------------------------------------
 	Passes the turn to the opposite player

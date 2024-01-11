@@ -31,6 +31,8 @@ bool ready;
 bool handshakeDone = false;
 
 int lastMove = 1 << 16;
+int playerPositionHistoryRow[playerPositionHistoryCnt];
+int playerPositionHistoryCol[playerPositionHistoryCnt];
 
 int myID = -1;
 
@@ -69,6 +71,12 @@ void GAME_initPlayers() {
 
 	players[1]->color = player1Color;
 	players[0]->color = player2Color;
+
+	playerPositionHistoryRow[playerPositionHistoryCnt - 1] = players[1]->r;
+	playerPositionHistoryCol[playerPositionHistoryCnt - 1] = players[1]->c;
+
+	playerPositionHistoryRow[playerPositionHistoryCnt - 2] = players[0]->r;
+	playerPositionHistoryCol[playerPositionHistoryCnt - 2] = players[0]->c;
 
 	nowPlaying = 0;
 	p = players[0];
@@ -179,6 +187,7 @@ void GAME_endOfTurn(void) {
 
 
 void GAME_changeTurn(void) {
+	int i;
 	player lastP = players[nowPlaying];
 
 	GAME_stopTimersAndRIT();
@@ -206,6 +215,13 @@ void GAME_changeTurn(void) {
 	GAME_drawNewTimer(nowPlaying);
 
 	if(players[nowPlaying]->playerType != PLAYER_otherBoard) GAME_findMovements(players[nowPlaying], lastP);
+
+	for(i = 1; i < playerPositionHistoryCnt; i++) {
+		playerPositionHistoryRow[i - 1] = playerPositionHistoryRow[i];
+		playerPositionHistoryCol[i - 1] = playerPositionHistoryCol[i];
+	}
+	playerPositionHistoryRow[i - 1] = lastP->r;
+	playerPositionHistoryCol[i - 1] = lastP->c;
 
 	GAME_continueTimersAndRIT();
 }
