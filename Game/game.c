@@ -223,6 +223,11 @@ void GAME_changeTurn(void) {
 	playerPositionHistoryRow[i - 1] = lastP->r;
 	playerPositionHistoryCol[i - 1] = lastP->c;
 
+	if(players[nowPlaying]->playerType == PLAYER_player)
+		joystickEnabled = key1Enabled = true;
+	else
+		joystickEnabled = key1Enabled = false;
+
 	GAME_continueTimersAndRIT();
 }
 
