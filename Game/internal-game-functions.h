@@ -97,20 +97,6 @@ int GAME_findMovementDir(player p, directions dir, player other);
 
 
 /*
-	GAME_getOppositeDir
-	---------------------------------------------------------------------
-	Returns the opposite of a given direction (eg up <--> down)
-	---------------------------------------------------------------------
-	PARAMETERS:
-		- dir: the given direction
-	---------------------------------------------------------------------
-	OUTPUT:
-		- its opposite (with DIR_none <--> DIR_none)
-*/
-directions GAME_getOppositeDir(directions dir);
-
-
-/*
 	GAME_end
 	---------------------------------------------------------------------
 	Ends the game, tells who the winner is, and to press int0 to restart
@@ -307,22 +293,6 @@ bool GAME_checkReachability(player p, player other);
 	Passes the turn to the opposite player
 */
 void GAME_changeTurn(void);
-
-
-/*
-	GAME_findPerpendicularDir
-	---------------------------------------------------------------------
-	Returns one of the two directions opposite to the given one
-	---------------------------------------------------------------------
-	PARAMETERS:
-		- dir: the original direction
-		- primary: a way to distinguish the two equivalent directions
-			primary order is right > up > left > down
-	---------------------------------------------------------------------
-	OUTPUT:
-		- the opposite direction to dir, as chosen by primary
-*/
-directions GAME_findPerpendicularDir(directions dir, bool primary);
 
 
 #endif

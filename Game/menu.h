@@ -1,9 +1,9 @@
 #ifndef _MENU_H
 #define _MENU_H
 
+#include "../directions/directions.h"
 #include "game.h"
 #include "lpc17xx.h"
-#include "directions.h"
 
 /*
 	MENU_choose

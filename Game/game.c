@@ -23,9 +23,10 @@ extern bool int0Enabled;
 extern bool key1Enabled;
 extern bool key2Enabled;
 
+// gameStatuses gameStatus = GAME_game;
 gameStatuses gameStatus = GAME_chooseNumBoards;
 
-bool dualBoard;
+bool dualBoard = false;
 bool otherPlayerReady = false;
 bool ready;
 bool handshakeDone = false;
@@ -65,6 +66,9 @@ void GAME_initPlayers() {
 
 	players[0]->choosenMovement = players[1]->choosenMovement = DIR_none;
 
+	players[1]->playerType = PLAYER_player;
+	players[0]->playerType = PLAYER_player;
+
 	players[0]->remainingWalls = players[1]->remainingWalls = numWalls;
 
 	players[1]->color = player1Color;
@@ -101,7 +105,7 @@ void GAME_reduceTimer(void) {
 	if(players[nowPlaying]->playerType == PLAYER_ai) AI_move(timerCnt);
 
 	if(timerCnt == 0) {
-		GAME_movePlayer(GAME_getOppositeDir(players[nowPlaying]->choosenMovement));
+		GAME_movePlayer(DIR_opposite(players[nowPlaying]->choosenMovement));
 		GAME_changeTurn();
 	}
 }
@@ -169,7 +173,7 @@ void GAME_endOfTurn(void) {
 		lastP->remainingWalls--;
 		GAME_writeNumWalls();
 
-		GAME_movePlayer(GAME_getOppositeDir(lastP->choosenMovement));
+		GAME_movePlayer(DIR_opposite(lastP->choosenMovement));
 
 		GAME_encodeWallPlacement(nowPlaying);
 	} else
@@ -185,7 +189,7 @@ void GAME_changeTurn(void) {
 	GAME_stopTimersAndRIT();
 
 	if(timerCnt == 0) {
-		GAME_movePlayer(GAME_getOppositeDir(lastP->choosenMovement));
+		GAME_movePlayer(DIR_opposite(lastP->choosenMovement));
 		GAME_deleteTmpWall();
 		GAME_encodeSkipTurn(nowPlaying);
 	}
@@ -304,11 +308,11 @@ int GAME_findMovementDir(player p, directions dir, player other) {
 
 		// other player cannot be jumped in a straight line: check for "L jumps"
 		else {
-			if(GAME_findMovementDir(other, GAME_findPerpendicularDir(dir, true), p))
-				p->availableMovement[GAME_sumDirections(dir, GAME_findPerpendicularDir(dir, true))] = 1;
+			if(GAME_findMovementDir(other, DIR_getPerpendicular(dir, true), p))
+				p->availableMovement[DIR_sum(dir, DIR_getPerpendicular(dir, true))] = 1;
 
-			if(GAME_findMovementDir(other, GAME_findPerpendicularDir(dir, false), p))
-				p->availableMovement[GAME_sumDirections(dir, GAME_findPerpendicularDir(dir, false))] = 1;
+			if(GAME_findMovementDir(other, DIR_getPerpendicular(dir, false), p))
+				p->availableMovement[DIR_sum(dir, DIR_getPerpendicular(dir, false))] = 1;
 
 			return 0;
 		}
@@ -327,7 +331,7 @@ void GAME_movePlayer(directions dir) {
 	GAME_stopTimersAndRIT();
 
 	// if player is reverting its last tmpMove
-	if(dir == GAME_getOppositeDir(p->choosenMovement)) {
+	if(dir == DIR_opposite(p->choosenMovement)) {
 		GAME_drawTileOffset(p->r, p->c, p->availableMovement[p->choosenMovement], p->choosenMovement, availableMoveColor);
 		GAME_drawTile(p->r, p->c, p->color);
 		p->choosenMovement = DIR_none;
@@ -346,21 +350,6 @@ void GAME_movePlayer(directions dir) {
 	}
 
 	GAME_continueTimersAndRIT();
-}
-
-
-directions GAME_getOppositeDir(directions dir) {
-	switch(dir) {
-		case DIR_down: return DIR_up;
-		case DIR_up: return DIR_down;
-		case DIR_left: return DIR_right;
-		case DIR_right: return DIR_left;
-		case DIR_down_left: return DIR_up_right;
-		case DIR_down_right: return DIR_up_left;
-		case DIR_up_left: return DIR_down_right;
-		case DIR_up_right: return DIR_down_left;
-		default: return DIR_none;
-	}
 }
 
 
@@ -399,7 +388,7 @@ void GAME_init(void) {
 
 	numInsertedWalls = 0;
 
-	GAME_drawEmptyGrid();
+	// GAME_drawEmptyGrid();
 	GAME_initPlayers();
 	GAME_drawGameTexts();
 
@@ -792,65 +781,4 @@ void GAME_notifyMissingBoard() {
 	GUI_Text((240 - 8 * strlen(row1)) / 2, 260, (uint8_t *) row1, errorTextColor, backgroundColor);
 	GUI_Text((240 - 8 * strlen(row2)) / 2, 280, (uint8_t *) row2, errorTextColor, backgroundColor);
 	GUI_Text((240 - 8 * strlen(row3)) / 2, 300, (uint8_t *) row3, errorTextColor, backgroundColor);
-}
-
-
-directions GAME_findPerpendicularDir(directions dir, bool primary) {
-	directions resPrimary;
-
-	switch(dir) {
-		case DIR_down: resPrimary = DIR_left; break;
-		case DIR_up: resPrimary = DIR_left; break;
-		case DIR_right: resPrimary = DIR_up; break;
-		case DIR_left: resPrimary = DIR_up; break;
-		case DIR_down_left: resPrimary = DIR_up_left; break;
-		case DIR_up_right: resPrimary = DIR_up_left; break;
-		case DIR_up_left: resPrimary = DIR_up_right; break;
-		case DIR_down_right: resPrimary = DIR_up_right; break;
-	}
-
-	if(primary) return resPrimary;
-	return GAME_getOppositeDir(resPrimary);
-}
-
-
-directions GAME_sumDirections(directions dir1, directions dir2) {
-	switch(dir1) {
-		case DIR_up:
-			if(dir2 == DIR_left) return DIR_up_left;
-			if(dir2 == DIR_right) return DIR_up_right;
-			break;
-		case DIR_down:
-			if(dir2 == DIR_left) return DIR_down_left;
-			if(dir2 == DIR_right) return DIR_down_right;
-			break;
-		case DIR_left:
-			if(dir2 == DIR_up) return DIR_up_left;
-			if(dir2 == DIR_down) return DIR_down_left;
-			break;
-		case DIR_right:
-			if(dir2 == DIR_up) return DIR_up_right;
-			if(dir2 == DIR_down) return DIR_down_right;
-			break;
-		case DIR_down_left:
-			if(dir2 == DIR_right) return DIR_down;
-			if(dir2 == DIR_up) return DIR_left;
-			break;
-		case DIR_down_right:
-			if(dir2 == DIR_left) return DIR_down;
-			if(dir2 == DIR_up) return DIR_right;
-			break;
-		case DIR_up_right:
-			if(dir2 == DIR_left) return DIR_up;
-			if(dir2 == DIR_down) return DIR_right;
-			break;
-		case DIR_up_left:
-			if(dir2 == DIR_right) return DIR_up;
-			if(dir2 == DIR_down) return DIR_left;
-			break;
-		case DIR_none: return dir2;
-	}
-
-	if(dir2 == DIR_none) return dir1;
-	return DIR_none;
 }

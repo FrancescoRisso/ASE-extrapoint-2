@@ -7,13 +7,14 @@
 #include "../CAN/CAN.h"
 #include "../GLCD/GLCD.h"
 #include "../RIT/RIT.h"
+#include "../directions/directions.h"
 #include "../timers/timers.h"
 #include "../utils/abs.h"
 #include "../utils/bool.h"
 #include "AI/AI.h"
-#include "directions.h"
 #include "lpc17xx.h"
 #include "menu.h"
+
 
 
 #define gridSize 7
@@ -219,30 +220,6 @@ void GAME_stopTimersAndRIT(void);
 	Resumes the timers and RIT's execution
 */
 void GAME_continueTimersAndRIT(void);
-
-
-/*
-	GAME_sumDirections
-	---------------------------------------------------------------------
-	Computes the sum of two directions, if possible (examples below)
-	If it is not possible, returns DIR_none
-	Examples:
-	- up + down = none
-	- none + up = up
-	- up + left = up_left
-	- up_left + right = up
-	- up + none = up
-	- up_left + down_right = none
-	- up_left + left = none (outside the "3x3 grid")
-	---------------------------------------------------------------------
-	PARAMETERS:
-		- dir1: the first base direction
-		- dir2: the second base direction
-	---------------------------------------------------------------------
-	OUTPUT:
-		- the diagonal (dir1 + dir2)
-*/
-directions GAME_sumDirections(directions dir1, directions dir2);
 
 
 #endif

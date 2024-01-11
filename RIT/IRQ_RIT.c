@@ -51,10 +51,10 @@ void RIT_IRQHandler(void) {
 				break;
 			case GAME_game:
 				dir = DIR_none;
-				if(joyUp) dir = GAME_sumDirections(dir, DIR_up);
-				if(joyDown) dir = GAME_sumDirections(dir, DIR_down);
-				if(joyLeft) dir = GAME_sumDirections(dir, DIR_left);
-				if(joyRight) dir = GAME_sumDirections(dir, DIR_right);
+				if(joyUp) dir = DIR_sum(dir, DIR_up);
+				if(joyDown) dir = DIR_sum(dir, DIR_down);
+				if(joyLeft) dir = DIR_sum(dir, DIR_left);
+				if(joyRight) dir = DIR_sum(dir, DIR_right);
 				GAME_move(dir);
 				break;
 		}

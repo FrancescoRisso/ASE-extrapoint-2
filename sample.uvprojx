@@ -486,7 +486,7 @@
             <File>
               <FileName>directions.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\Game\directions.h</FilePath>
+              <FilePath>.\directions\directions.h</FilePath>
             </File>
             <File>
               <FileName>AI.c</FileName>
@@ -637,6 +637,21 @@
               <FileName>lib_CAN.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\CAN\lib_CAN.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>directions</GroupName>
+          <Files>
+            <File>
+              <FileName>directions.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\directions\directions.c</FilePath>
+            </File>
+            <File>
+              <FileName>directions.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\directions\directions.h</FilePath>
             </File>
           </Files>
         </Group>
