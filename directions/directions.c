@@ -75,3 +75,19 @@ directions DIR_opposite(directions dir) {
 		default: return DIR_none;
 	}
 }
+
+
+directions DIR_computeFromPoints(int startR, int startC, int endR, int endC) {
+	directions horiz = DIR_none, vert = DIR_none;
+
+	if(abs(startR - endR) > 1) return DIR_none;
+	if(abs(startC - endC) > 1) return DIR_none;
+
+	if(startR > endR) vert = DIR_up;
+	if(startR < endR) vert = DIR_down;
+
+	if(startC > endC) vert = DIR_left;
+	if(startC < endC) vert = DIR_right;
+
+	return DIR_sum(horiz, vert);
+}
