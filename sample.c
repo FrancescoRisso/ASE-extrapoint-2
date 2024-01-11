@@ -35,7 +35,6 @@ extern uint8_t ScaleFlag;  // <- ScaleFlag needs to visible in order for the emu
   Main Program
  *----------------------------------------------------------------------------*/
 int main(void) {
-	volatile bool a;
 	SystemInit(); /* System Initialization (i.e., PLL)  */
 	LCD_Initialization();
 
