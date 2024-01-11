@@ -21,6 +21,8 @@
 #define randomWeightOfWrongDir 2
 #define randomWeightOfUselessDir 3
 
+#define randomMaxWallWeight 8
+
 
 /*
 	AI_random
@@ -90,6 +92,15 @@ void AI_moveRandomly(void);
 		- if the current tmpWall can be inserted
 */
 bool AI_wallIsCorrect(void);
+
+
+/*
+	AI_randomPlaceWall
+	---------------------------------------------------------------------
+	Selects a (valid) random wall position and places it
+	WARNING: it supposes the player still has walls available
+*/
+void AI_randomPlaceWall(void);
 
 
 #endif

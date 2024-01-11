@@ -89,7 +89,7 @@ void AI_randomAction() {
 
 	randVal -= randomWeightOfMovingToken;
 
-	// placeWall
+	AI_randomPlaceWall();
 }
 
 void AI_moveRandomly() {
@@ -119,8 +119,6 @@ void AI_moveRandomly() {
 	for(dir = (directions) 0; dir < DIR_none; dir++)
 		if(players[nowPlaying]->availableMovement[dir] != 0) totWeight += weights[dir];
 
-	randVal = AI_random(totWeight - 1);
-
 	for(dir = (directions) 0; dir < DIR_none; dir++)
 		if(players[nowPlaying]->availableMovement[dir] != 0) {
 			if(randVal < weights[dir]) {
@@ -136,9 +134,46 @@ bool AI_wallIsCorrect() {
 	if(GAME_tmpWallOverlaps()) return false;
 	if(!GAME_checkReachability(players[0], players[1])) return false;
 	if(!GAME_checkReachability(players[1], players[0])) return false;
-	
+
 	return true;
 }
 
+void AI_randomPlaceWall() {
+	int totWeight = 0;
+	int weights[gridSize - 1];
+	int randVal;
+	int row, col;
+	bool horiz;
+
+	for(row = 0; row < gridSize - 1; row++) weights[row] = randomMaxWallWeight - abs(players[nowPlaying]->finalR - row);
+
+	for(row = 0; row < gridSize - 1; row++) {
+		tmpWall.centerR = row;
+		for(col = 0; col < gridSize - 1; col++) {
+			tmpWall.centerC = col;
+			for(horiz = false; horiz < 2; horiz++) {
+				tmpWall.horiz = horiz;
+				if(AI_wallIsCorrect()) totWeight += weights[row];
+			}
 		}
+	}
+
+	randVal = AI_random(totWeight - 1);
+
+	for(row = 0; row < gridSize - 1; row++) {
+		tmpWall.centerR = row;
+		for(col = 0; col < gridSize - 1; col++) {
+			tmpWall.centerC = col;
+			for(horiz = false; horiz < 2; horiz++) {
+				tmpWall.horiz = horiz;
+				if(AI_wallIsCorrect()) {
+					if(randVal < weights[row]) {
+						isInsertingWall = true;
+						return;
+					}
+					randVal -= weights[row];
+				}
+			}
+		}
+	}
 }
