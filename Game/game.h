@@ -70,7 +70,7 @@ typedef enum { PLAYER_player, PLAYER_ai, PLAYER_otherBoard } playerTypes;
 
 typedef struct {
 	int r, c, finalR;
-	int availableMovement[4];
+	int availableMovement[8];
 	directions choosenMovement;
 	int remainingWalls;
 	int color;
@@ -219,6 +219,30 @@ void GAME_stopTimersAndRIT(void);
 	Resumes the timers and RIT's execution
 */
 void GAME_continueTimersAndRIT(void);
+
+
+/*
+	GAME_sumDirections
+	---------------------------------------------------------------------
+	Computes the sum of two directions, if possible (examples below)
+	If it is not possible, returns DIR_none
+	Examples:
+	- up + down = none
+	- none + up = up
+	- up + left = up_left
+	- up_left + right = up
+	- up + none = up
+	- up_left + down_right = none
+	- up_left + left = none (outside the "3x3 grid")
+	---------------------------------------------------------------------
+	PARAMETERS:
+		- dir1: the first base direction
+		- dir2: the second base direction
+	---------------------------------------------------------------------
+	OUTPUT:
+		- the diagonal (dir1 + dir2)
+*/
+directions GAME_sumDirections(directions dir1, directions dir2);
 
 
 #endif

@@ -141,6 +141,10 @@ void GAME_drawTileOffset(int baseR, int baseC, int offset, directions dir, int c
 		case DIR_up: GAME_drawTile(baseR - offset, baseC, color); break;
 		case DIR_left: GAME_drawTile(baseR, baseC - offset, color); break;
 		case DIR_right: GAME_drawTile(baseR, baseC + offset, color); break;
+		case DIR_up_right: GAME_drawTile(baseR - offset, baseC + offset, color); break;
+		case DIR_up_left: GAME_drawTile(baseR - offset, baseC - offset, color); break;
+		case DIR_down_right: GAME_drawTile(baseR + offset, baseC + offset, color); break;
+		case DIR_down_left: GAME_drawTile(baseR + offset, baseC - offset, color); break;
 		default: break;
 	}
 }
@@ -218,7 +222,7 @@ void GAME_start(void) {
 void GAME_resetMovements(player p) {
 	int i;
 
-	for(i = 0; i < 4; i++)
+	for(i = 0; i < DIR_none; i++)
 		if(p->availableMovement[i] != 0 && p->choosenMovement != i)
 			GAME_drawTileOffset(p->r, p->c, p->availableMovement[i], (directions) i, backgroundColor);
 
@@ -227,13 +231,29 @@ void GAME_resetMovements(player p) {
 		case DIR_up: p->r -= p->availableMovement[DIR_up]; break;
 		case DIR_left: p->c -= p->availableMovement[DIR_left]; break;
 		case DIR_right: p->c += p->availableMovement[DIR_right]; break;
+		case DIR_down_left:
+			p->r++;
+			p->c--;
+			break;
+		case DIR_down_right:
+			p->r++;
+			p->c++;
+			break;
+		case DIR_up_left:
+			p->r--;
+			p->c--;
+			break;
+		case DIR_up_right:
+			p->r--;
+			p->c++;
+			break;
 		default: break;
 	}
 
 	// GAME_drawTile(p->r, p->c, p->color);
 
 	p->choosenMovement = DIR_none;
-	for(i = 0; i < 4; i++) p->availableMovement[i] = 0;
+	for(i = 0; i < DIR_none; i++) p->availableMovement[i] = 0;
 }
 
 
@@ -245,6 +265,10 @@ void GAME_findMovements(player p, player other) {
 		res = GAME_findMovementDir(p, dir, other);
 		p->availableMovement[dir] = res;
 		if(res && p->playerType == PLAYER_player) GAME_drawTileOffset(p->r, p->c, res, dir, availableMoveColor);
+	}
+
+	for(; dir < DIR_none; dir++) {
+		if(p->availableMovement[dir] && p->playerType == PLAYER_player) GAME_drawTileOffset(p->r, p->c, 1, dir, availableMoveColor);
 	}
 }
 
@@ -278,9 +302,16 @@ int GAME_findMovementDir(player p, directions dir, player other) {
 		// other player can be jumped
 		if(afterJump != 0) return 2;
 
-		// other player cannot be jumped
-		else
+		// other player cannot be jumped in a straight line: check for "L jumps"
+		else {
+			if(GAME_findMovementDir(other, GAME_findPerpendicularDir(dir, true), p))
+				p->availableMovement[GAME_sumDirections(dir, GAME_findPerpendicularDir(dir, true))] = 1;
+
+			if(GAME_findMovementDir(other, GAME_findPerpendicularDir(dir, false), p))
+				p->availableMovement[GAME_sumDirections(dir, GAME_findPerpendicularDir(dir, false))] = 1;
+
 			return 0;
+		}
 	}
 
 	// if none of the previous conditions sussist, movement by 1 is allowed
@@ -324,6 +355,10 @@ directions GAME_getOppositeDir(directions dir) {
 		case DIR_up: return DIR_down;
 		case DIR_left: return DIR_right;
 		case DIR_right: return DIR_left;
+		case DIR_down_left: return DIR_up_right;
+		case DIR_down_right: return DIR_up_left;
+		case DIR_up_left: return DIR_down_right;
+		case DIR_up_right: return DIR_down_left;
 		default: return DIR_none;
 	}
 }
@@ -757,4 +792,65 @@ void GAME_notifyMissingBoard() {
 	GUI_Text((240 - 8 * strlen(row1)) / 2, 260, (uint8_t *) row1, errorTextColor, backgroundColor);
 	GUI_Text((240 - 8 * strlen(row2)) / 2, 280, (uint8_t *) row2, errorTextColor, backgroundColor);
 	GUI_Text((240 - 8 * strlen(row3)) / 2, 300, (uint8_t *) row3, errorTextColor, backgroundColor);
+}
+
+
+directions GAME_findPerpendicularDir(directions dir, bool primary) {
+	directions resPrimary;
+
+	switch(dir) {
+		case DIR_down: resPrimary = DIR_left; break;
+		case DIR_up: resPrimary = DIR_left; break;
+		case DIR_right: resPrimary = DIR_up; break;
+		case DIR_left: resPrimary = DIR_up; break;
+		case DIR_down_left: resPrimary = DIR_up_left; break;
+		case DIR_up_right: resPrimary = DIR_up_left; break;
+		case DIR_up_left: resPrimary = DIR_up_right; break;
+		case DIR_down_right: resPrimary = DIR_up_right; break;
+	}
+
+	if(primary) return resPrimary;
+	return GAME_getOppositeDir(resPrimary);
+}
+
+
+directions GAME_sumDirections(directions dir1, directions dir2) {
+	switch(dir1) {
+		case DIR_up:
+			if(dir2 == DIR_left) return DIR_up_left;
+			if(dir2 == DIR_right) return DIR_up_right;
+			break;
+		case DIR_down:
+			if(dir2 == DIR_left) return DIR_down_left;
+			if(dir2 == DIR_right) return DIR_down_right;
+			break;
+		case DIR_left:
+			if(dir2 == DIR_up) return DIR_up_left;
+			if(dir2 == DIR_down) return DIR_down_left;
+			break;
+		case DIR_right:
+			if(dir2 == DIR_up) return DIR_up_right;
+			if(dir2 == DIR_down) return DIR_down_right;
+			break;
+		case DIR_down_left:
+			if(dir2 == DIR_right) return DIR_down;
+			if(dir2 == DIR_up) return DIR_left;
+			break;
+		case DIR_down_right:
+			if(dir2 == DIR_left) return DIR_down;
+			if(dir2 == DIR_up) return DIR_right;
+			break;
+		case DIR_up_right:
+			if(dir2 == DIR_left) return DIR_up;
+			if(dir2 == DIR_down) return DIR_right;
+			break;
+		case DIR_up_left:
+			if(dir2 == DIR_right) return DIR_up;
+			if(dir2 == DIR_down) return DIR_left;
+			break;
+		case DIR_none: return dir2;
+	}
+
+	if(dir2 == DIR_none) return dir1;
+	return DIR_none;
 }

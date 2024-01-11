@@ -308,4 +308,21 @@ bool GAME_checkReachability(player p, player other);
 */
 void GAME_changeTurn(void);
 
+
+/*
+	GAME_findPerpendicularDir
+	---------------------------------------------------------------------
+	Returns one of the two directions opposite to the given one
+	---------------------------------------------------------------------
+	PARAMETERS:
+		- dir: the original direction
+		- primary: a way to distinguish the two equivalent directions
+			primary order is right > up > left > down
+	---------------------------------------------------------------------
+	OUTPUT:
+		- the opposite direction to dir, as chosen by primary
+*/
+directions GAME_findPerpendicularDir(directions dir, bool primary);
+
+
 #endif
