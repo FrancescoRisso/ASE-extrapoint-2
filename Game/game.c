@@ -377,6 +377,8 @@ void GAME_init(void) {
 	// TIMER_setValue(TIMER_0, TIMER_matchReg0, 100000000, TIMER_reset_interrupt);
 	enable_RIT();
 
+	gameStatus = GAME_game;
+
 	GAME_start();
 }
 
