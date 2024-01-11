@@ -387,7 +387,10 @@ void GAME_encodePlayerMove(int playerID) {
 	int res = 0;
 	player p = players[playerID];
 
-	if(timerCnt == 0) return GAME_encodeSkipTurn(playerID);
+	if(timerCnt == 0) {
+		GAME_encodeSkipTurn(playerID);
+		return;
+	}
 
 	res = playerID;           // playerID
 	res = (res << 4) + 0;     // playerMove
@@ -402,7 +405,10 @@ void GAME_encodePlayerMove(int playerID) {
 void GAME_encodeWallPlacement(int playerID) {
 	int res = 0;
 
-	if(timerCnt == 0) return GAME_encodeSkipTurn(playerID);
+	if(timerCnt == 0) {
+		GAME_encodeSkipTurn(playerID);
+		return;
+	}
 
 	res = playerID;                      // playerID
 	res = (res << 4) + 1;                // wallPlacement
@@ -416,8 +422,6 @@ void GAME_encodeWallPlacement(int playerID) {
 
 void GAME_encodeSkipTurn(int playerID) {
 	int res = 0;
-
-	if(timerCnt == 0) return ((playerID << 8) + 1) << 16;
 
 	res = playerID;        // playerID
 	res = (res << 4) + 0;  // playerMove = 0
@@ -724,9 +728,9 @@ void GAME_execEncodedMove(int move) {
 	player p;
 
 	playerID = move & 0xFF000000;
-	isWall = (move & 0x00F00000) != 0;
-	vert = (move & 0x000F0000) == 0;
-	isValid = !isWall && !vert;
+	isWall = (bool) ((move & 0x00F00000) != 0);
+	vert = (bool) ((move & 0x000F0000) == 0);
+	isValid = (bool) (!isWall && !vert);
 	posY = (move & 0x0000FF00) >> 8;
 	posX = move & 0x000000FF;
 
@@ -736,7 +740,7 @@ void GAME_execEncodedMove(int move) {
 		if(isWall) {
 			tmpWall.centerR = posY;
 			tmpWall.centerC = posX;
-			tmpWall.horiz = !vert;
+			tmpWall.horiz = (bool) !vert;
 			isInsertingWall = true;
 		} else {
 			GAME_drawTile(p->r, p->c, backgroundColor);

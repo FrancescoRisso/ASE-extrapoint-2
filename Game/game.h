@@ -189,7 +189,7 @@ void GAME_execEncodedMove(int move);
 	Prints a message telling that the match is in single-board mode due
 	to a failed handshake
 */
-void GAME_notifyMissingBoard();
+void GAME_notifyMissingBoard(void);
 
 
 #endif
