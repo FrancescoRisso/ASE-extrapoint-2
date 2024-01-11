@@ -52,9 +52,7 @@ bool AI_tryMirroringMove() {
 		tmpWall.centerC = gridSize - posX - 2;
 		tmpWall.horiz = (bool) !vert;
 
-		if(GAME_tmpWallOverlaps()) return false;
-		if(!GAME_checkReachability(players[0], players[1])) return false;
-		if(!GAME_checkReachability(players[1], players[0])) return false;
+		if(!AI_wallIsCorrect()) return false;
 
 		isInsertingWall = true;
 		return true;
@@ -130,5 +128,17 @@ void AI_moveRandomly() {
 				return;
 			} else
 				randVal -= weights[dir];
+		}
+}
+
+
+bool AI_wallIsCorrect() {
+	if(GAME_tmpWallOverlaps()) return false;
+	if(!GAME_checkReachability(players[0], players[1])) return false;
+	if(!GAME_checkReachability(players[1], players[0])) return false;
+	
+	return true;
+}
+
 		}
 }

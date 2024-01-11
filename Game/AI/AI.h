@@ -80,4 +80,16 @@ void AI_randomAction(void);
 void AI_moveRandomly(void);
 
 
+/*
+	AI_wallIsCorrect
+	---------------------------------------------------------------------
+	Checks if the current tmpWall can be inserted
+	WARNING: it supposes the player still has walls available
+	---------------------------------------------------------------------
+	OUTPUT:
+		- if the current tmpWall can be inserted
+*/
+bool AI_wallIsCorrect(void);
+
+
 #endif
