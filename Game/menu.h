@@ -1,9 +1,11 @@
 #ifndef _MENU_H
 #define _MENU_H
 
+#include "../RIT/RIT.h"
 #include "../directions/directions.h"
 #include "game.h"
 #include "lpc17xx.h"
+
 
 /*
 	MENU_choose
