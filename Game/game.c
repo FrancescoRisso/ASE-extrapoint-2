@@ -195,7 +195,7 @@ void GAME_changeTurn(void) {
 	}
 	GAME_drawNewTimer(nowPlaying);
 
-	if(players[nowPlaying]->playerType != PLAYER_ai) GAME_findMovements(players[nowPlaying], lastP);
+	if(players[nowPlaying]->playerType != PLAYER_otherBoard) GAME_findMovements(players[nowPlaying], lastP);
 
 	GAME_continueTimersAndRIT();
 }
@@ -332,7 +332,7 @@ void GAME_stopTimersAndRIT(void) {
 
 
 void GAME_continueTimersAndRIT(void) {
-	if(players[nowPlaying]->playerType != PLAYER_ai) TIMER_enable(TIMER_0);
+	if(players[nowPlaying]->playerType != PLAYER_otherBoard) TIMER_enable(TIMER_0);
 	enable_RIT();
 }
 
