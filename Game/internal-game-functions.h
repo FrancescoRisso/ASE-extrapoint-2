@@ -59,14 +59,6 @@ void GAME_drawTileOffset(int baseR, int baseC, int offset, directions dir, int c
 
 
 /*
-	GAME_tellToStart
-	---------------------------------------------------------------------
-	Writes to the screen to press INT0 to start the game
-*/
-void GAME_tellToStart(void);
-
-
-/*
 	GAME_resetMovements
 	---------------------------------------------------------------------
 	Resets a player's availableMovements array and clears the respective

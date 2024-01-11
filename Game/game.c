@@ -201,11 +201,6 @@ void GAME_changeTurn(void) {
 }
 
 
-void GAME_tellToStart(void) {
-	GUI_Text(128, timerY, (uint8_t *) "INT0 to start", textColor, backgroundColor);
-}
-
-
 void GAME_start(void) {
 	int0Enabled = false;
 	joystickEnabled = true;
