@@ -172,8 +172,7 @@ void GAME_endOfTurn(void) {
 		GAME_movePlayer(DIR_opposite(lastP->choosenMovement));
 
 		GAME_encodeWallPlacement(nowPlaying);
-	} else
-		GAME_encodePlayerMove(nowPlaying);
+	}
 
 	GAME_changeTurn();
 }
@@ -190,11 +189,14 @@ void GAME_changeTurn(void) {
 		GAME_encodeSkipTurn(nowPlaying);
 	}
 
-	isInsertingWall = false;
-	tmpWallIsValid = false;
+	GAME_resetMovements(lastP);
+
+	if(!isInsertingWall) GAME_encodePlayerMove(nowPlaying);
+	lastP->choosenMovement = DIR_none;
 
 	nowPlaying = (nowPlaying + 1) % 2;
-	GAME_resetMovements(lastP);
+	isInsertingWall = false;
+	tmpWallIsValid = false;
 
 	if(lastP->r == lastP->finalR) {
 		GAME_end(lastP);
@@ -252,7 +254,6 @@ void GAME_resetMovements(player p) {
 
 	// GAME_drawTile(p->r, p->c, p->color);
 
-	p->choosenMovement = DIR_none;
 	for(i = 0; i < DIR_none; i++) p->availableMovement[i] = 0;
 }
 

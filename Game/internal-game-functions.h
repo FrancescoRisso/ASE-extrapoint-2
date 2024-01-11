@@ -61,8 +61,9 @@ void GAME_drawTileOffset(int baseR, int baseC, int offset, directions dir, int c
 /*
 	GAME_resetMovements
 	---------------------------------------------------------------------
-	Resets a player's availableMovements array and clears the respective
-	cells
+	Updates the player struct confirming the move (updates the position,
+	and clears availableMovements and the respective grid cells)
+	WARNING: it does not reset chosenMovement
 	---------------------------------------------------------------------
 	PARAMETERS:
 		- p: the player
