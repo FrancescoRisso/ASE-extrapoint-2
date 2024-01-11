@@ -45,6 +45,7 @@ void RIT_IRQHandler(void) {
 
 		if(JOY_updateStatus(JOY_centerPress) == JOY_press) switch(gameStatus) {
 				case GAME_chooseNumBoards: MENU_confirmChoice(); break;
+				case GAME_AIorPlayer: MENU_confirmChoice(); break;
 				case GAME_game: GAME_endOfTurn(); break;
 			}
 	}
