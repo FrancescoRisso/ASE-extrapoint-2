@@ -56,8 +56,8 @@ void GAME_drawTile(int r, int c, int color) {
 void GAME_initPlayers() {
 	player p;
 
-	players[0]->r = players[1]->finalR = 0;
-	players[1]->r = players[0]->finalR = gridSize - 1;
+	players[1]->r = players[0]->finalR = 0;
+	players[0]->r = players[1]->finalR = gridSize - 1;
 
 	players[0]->c = players[1]->c = gridSize / 2;
 
@@ -65,8 +65,8 @@ void GAME_initPlayers() {
 
 	players[0]->remainingWalls = players[1]->remainingWalls = numWalls;
 
-	players[0]->color = player1Color;
-	players[1]->color = player2Color;
+	players[1]->color = player1Color;
+	players[0]->color = player2Color;
 
 	nowPlaying = 0;
 	p = players[0];
