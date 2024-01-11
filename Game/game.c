@@ -345,7 +345,6 @@ void GAME_continueTimersAndRIT(void) {
 void GAME_end(player winner) {
 	int xPos = 50, yPos = 260, winnerXoffset = 120, winnerSize = 15;
 
-	int0Enabled = true;
 	joystickEnabled = key1Enabled = key2Enabled = false;
 
 	GAME_stopTimersAndRIT();
@@ -355,7 +354,7 @@ void GAME_end(player winner) {
 	GUI_Text(xPos, yPos, "The winner is: ", textColor, backgroundColor);
 	LCD_drawRect(xPos + winnerXoffset, xPos + winnerXoffset + winnerSize, yPos, yPos + winnerSize, backgroundColor, winner->color);
 
-	GUI_Text(40, yPos + 30, "Press INT0 to restart", textColor, backgroundColor);
+	GUI_Text(40, yPos + 30, "Press RESET to restart", textColor, backgroundColor);
 
 	enable_RIT();
 }
