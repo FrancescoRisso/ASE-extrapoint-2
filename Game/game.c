@@ -727,7 +727,7 @@ void GAME_execEncodedMove(int move) {
 
 	player p;
 
-	decodeMove()
+	decodeMove();
 
 	p = players[playerID];
 
