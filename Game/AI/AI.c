@@ -12,10 +12,7 @@ extern int playerPositionHistoryRow[], playerPositionHistoryCol[];
 
 
 int AI_random(int max) {
-	int i, sum = 0;
-
-	for(i = 0; i < randomIterations; i++) sum += LPC_RIT->RICOUNTER % (max + 1);
-	return sum % (max + 1);
+	return rand() % (max + 1);
 }
 
 

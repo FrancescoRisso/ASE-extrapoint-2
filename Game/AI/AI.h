@@ -1,9 +1,11 @@
 #ifndef _AI_H
 #define _AI_H
 
+#include <stdlib.h>
+#include <time.h>
+
 #include "../game.h"
 #include "lpc17xx.h"
-
 
 
 #define randomIterations 7

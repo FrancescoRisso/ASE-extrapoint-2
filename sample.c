@@ -14,6 +14,8 @@
  *----------------------------------------------------------------------------*/
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "CAN/CAN.h"
 #include "GLCD/GLCD.h"
@@ -38,6 +40,8 @@ int main(void) {
 	LCD_Initialization();
 
 	CAN_Init();
+
+	srand(time(NULL));
 
 	init_RIT(TIME_50MS);
 	enable_RIT();
