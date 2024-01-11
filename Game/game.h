@@ -192,4 +192,20 @@ void GAME_execEncodedMove(int move);
 void GAME_notifyMissingBoard(void);
 
 
+/*
+	GAME_stopTimersAndRIT
+	---------------------------------------------------------------------
+	Temporarily stops timers and RIT
+*/
+void GAME_stopTimersAndRIT(void);
+
+
+/*
+	GAME_continueTimersAndRIT
+	---------------------------------------------------------------------
+	Resumes the timers and RIT's execution
+*/
+void GAME_continueTimersAndRIT(void);
+
+
 #endif

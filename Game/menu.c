@@ -38,11 +38,15 @@ void MENU_drawOption(int optionNo, bool selected);
 void MENU_draw(char *row1, char *row2) {
 	LCD_Clear(backgroundColor);
 
+	GAME_stopTimersAndRIT();
+
 	GUI_Text((240 - 8 * strlen(row1)) / 2, 110, (uint8_t *) row1, textColor, backgroundColor);
 	GUI_Text((240 - 8 * strlen(row2)) / 2, 130, (uint8_t *) row2, textColor, backgroundColor);
 
 	MENU_drawOption(0, false);
 	MENU_drawOption(1, false);
+
+	GAME_continueTimersAndRIT();
 }
 
 
@@ -58,6 +62,8 @@ void MENU_drawOption(int optionNo, bool selected) {
 
 
 void MENU_choose(directions dir) {
+	GAME_stopTimersAndRIT();
+
 	if(dir == DIR_up) {
 		choosenOption = DIR_up;
 		MENU_drawOption(0, true);
@@ -67,6 +73,8 @@ void MENU_choose(directions dir) {
 		MENU_drawOption(0, false);
 		MENU_drawOption(1, true);
 	}
+
+	GAME_continueTimersAndRIT();
 }
 
 

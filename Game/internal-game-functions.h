@@ -111,22 +111,6 @@ directions GAME_getOppositeDir(directions dir);
 
 
 /*
-	GAME_stopTimersAndRIT
-	---------------------------------------------------------------------
-	Temporarily stops timers and RIT
-*/
-void GAME_stopTimersAndRIT(void);
-
-
-/*
-	GAME_continueTimersAndRIT
-	---------------------------------------------------------------------
-	Resumes the timers and RIT's execution
-*/
-void GAME_continueTimersAndRIT(void);
-
-
-/*
 	GAME_end
 	---------------------------------------------------------------------
 	Ends the game, tells who the winner is, and to press int0 to restart
