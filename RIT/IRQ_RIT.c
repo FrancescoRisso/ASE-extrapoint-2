@@ -55,7 +55,7 @@ void RIT_IRQHandler(void) {
 				if(joyDown) dir = DIR_sum(dir, DIR_down);
 				if(joyLeft) dir = DIR_sum(dir, DIR_left);
 				if(joyRight) dir = DIR_sum(dir, DIR_right);
-				GAME_move(dir);
+				if(dir != DIR_none) GAME_move(dir);
 				break;
 		}
 

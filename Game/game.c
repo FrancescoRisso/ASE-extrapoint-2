@@ -549,6 +549,8 @@ void GAME_rotateWall(void) {
 
 
 void GAME_moveWall(directions dir) {
+	if(dir == DIR_none || dir == DIR_down_left || dir == DIR_down_right || dir == DIR_up_left || dir == DIR_up_right) return;
+
 	GAME_deleteTmpWall();
 
 	switch(dir) {
@@ -564,6 +566,7 @@ void GAME_moveWall(directions dir) {
 		case DIR_right:
 			if(tmpWall.centerC != gridSize - 2) tmpWall.centerC++;
 			break;
+		default: break;
 	}
 
 	GAME_drawWall(tmpWall, placingWallColor);
