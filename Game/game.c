@@ -381,7 +381,7 @@ void GAME_encodePlayerMove(int playerID) {
 	int res = 0;
 	player p = players[playerID];
 
-	if(timerCnt == 0) {
+	if(timerCnt == 0 || p->choosenMovement == DIR_none) {
 		GAME_encodeSkipTurn(playerID);
 		return;
 	}
