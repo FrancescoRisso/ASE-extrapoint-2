@@ -23,10 +23,9 @@ extern bool int0Enabled;
 extern bool key1Enabled;
 extern bool key2Enabled;
 
-// gameStatuses gameStatus = GAME_game;
 gameStatuses gameStatus = GAME_chooseNumBoards;
 
-bool dualBoard = false;
+bool dualBoard;
 bool otherPlayerReady = false;
 bool ready;
 bool handshakeDone = false;
@@ -65,9 +64,6 @@ void GAME_initPlayers() {
 	players[0]->c = players[1]->c = gridSize / 2;
 
 	players[0]->choosenMovement = players[1]->choosenMovement = DIR_none;
-
-	players[1]->playerType = PLAYER_player;
-	players[0]->playerType = PLAYER_player;
 
 	players[0]->remainingWalls = players[1]->remainingWalls = numWalls;
 
@@ -388,7 +384,7 @@ void GAME_init(void) {
 
 	numInsertedWalls = 0;
 
-	// GAME_drawEmptyGrid();
+	GAME_drawEmptyGrid();
 	GAME_initPlayers();
 	GAME_drawGameTexts();
 
