@@ -43,8 +43,8 @@ int main(void) {
 	init_RIT(TIME_50MS);
 	enable_RIT();
 
-	// MENU_boardChoiceMenu();
-	GAME_init();
+	MENU_boardChoiceMenu();
+	// GAME_init();
 
 	POW_setPowerMode(POW_sleep);
 
