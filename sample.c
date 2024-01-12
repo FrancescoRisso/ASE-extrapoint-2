@@ -22,6 +22,7 @@
 #include "LPC17xx.H" /* LPC17xx definitions                */
 #include "RIT/RIT.h"
 #include "buttons/buttons.h"
+#include "game/debugOpts.h"
 #include "game/game.h"
 #include "timers/timers.h"
 #include "utils/power.h"
@@ -43,8 +44,11 @@ int main(void) {
 	init_RIT(TIME_50MS);
 	enable_RIT();
 
+#ifdef DEBUG_skipMenu
+	GAME_init();
+#else
 	MENU_boardChoiceMenu();
-	// GAME_init();
+#endif
 
 	POW_setPowerMode(POW_sleep);
 

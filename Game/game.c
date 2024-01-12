@@ -1,3 +1,7 @@
+// clang-format off
+#include "debugOpts.h"
+// clang-format on
+
 #include "game.h"
 
 #include "internal-game-functions.h"
@@ -23,7 +27,11 @@ extern bool int0Enabled;
 extern bool key1Enabled;
 extern bool key2Enabled;
 
+#ifdef DEBUG_skipMenu
+gameStatuses gameStatus = GAME_game;
+#else
 gameStatuses gameStatus = GAME_chooseNumBoards;
+#endif
 
 bool dualBoard;
 bool otherPlayerReady = false;
@@ -77,6 +85,13 @@ void GAME_initPlayers() {
 
 	playerPositionHistoryRow[playerPositionHistoryCnt - 2] = players[0]->r;
 	playerPositionHistoryCol[playerPositionHistoryCnt - 2] = players[0]->c;
+
+#ifdef DEBUG_blueIsAI
+	players[0]->playerType = PLAYER_ai;
+#endif
+#ifdef DEBUG_redIsAI
+	players[1]->playerType = PLAYER_ai;
+#endif
 
 	nowPlaying = 0;
 	p = players[0];
@@ -408,9 +423,16 @@ void GAME_init(void) {
 
 	numInsertedWalls = 0;
 
+#ifdef DEBUG_avoidRandom
+	srand(1);
+#else
 	srand(LPC_RIT->RICOUNTER);
+#endif
 
+#ifndef DEBUG_skipGrid
 	GAME_drawEmptyGrid();
+#endif
+
 	GAME_initPlayers();
 	GAME_drawGameTexts();
 
@@ -418,7 +440,15 @@ void GAME_init(void) {
 	NVIC_SetPriority(TIMER0_IRQn, 1);
 
 	TIMER_setValue(TIMER_0, TIMER_matchReg0, 25000000, TIMER_reset_interrupt);
-	// TIMER_setValue(TIMER_0, TIMER_matchReg0, 100000000, TIMER_reset_interrupt);
+
+#ifdef DEBUG_timerFaster
+	TIMER_setValue(TIMER_0, TIMER_matchReg0, 5000000, TIMER_reset_interrupt);
+#endif
+
+#ifdef DEBUG_timerSlower
+	TIMER_setValue(TIMER_0, TIMER_matchReg0, 100000000, TIMER_reset_interrupt);
+#endif
+
 	enable_RIT();
 
 	gameStatus = GAME_game;

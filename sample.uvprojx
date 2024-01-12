@@ -498,6 +498,11 @@
               <FileType>5</FileType>
               <FilePath>.\Game\AI\AI.h</FilePath>
             </File>
+            <File>
+              <FileName>debugOpts.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Game\debugOpts.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
