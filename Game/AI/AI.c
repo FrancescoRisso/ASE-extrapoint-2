@@ -17,6 +17,12 @@ int AI_random(int max) {
 
 
 void AI_move(int timeLeft) {
+	// don't do a move immediately
+	if(timeLeft == 19) {
+		moveIsTimerRunout = false;
+		return;
+	}
+
 	// choose randomly if the move should be done now or later in the
 	// turn (to emulate a player thinking)
 	// if this is the last second before the timer expires, however,
@@ -24,10 +30,7 @@ void AI_move(int timeLeft) {
 	if(!moveIsTimerRunout && (timeLeft == 1 || AI_random(2) == 0)) {
 		if(!AI_tryMirroringMove()) AI_randomAction();
 
-		if(!moveIsTimerRunout) {
-			moveIsTimerRunout = false;
-			GAME_endOfTurn();
-		}
+		if(!moveIsTimerRunout) GAME_endOfTurn();
 	};
 }
 
@@ -92,6 +95,7 @@ void AI_randomAction() {
 	AI_randomPlaceWall();
 }
 
+
 void AI_moveRandomly() {
 	int totWeight = 0;
 	int weights[DIR_none];
@@ -118,6 +122,8 @@ void AI_moveRandomly() {
 
 	for(dir = (directions) 0; dir < DIR_none; dir++)
 		if(players[nowPlaying]->availableMovement[dir] != 0) totWeight += weights[dir];
+
+	randVal = AI_random(totWeight - 1);
 
 	for(dir = (directions) 0; dir < DIR_none; dir++)
 		if(players[nowPlaying]->availableMovement[dir] != 0) {
