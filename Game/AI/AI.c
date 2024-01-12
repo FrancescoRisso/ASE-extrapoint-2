@@ -1,8 +1,6 @@
 #include "AI.h"
 
 
-bool moveIsTimerRunout = false;
-
 extern int lastMove;
 extern wallPos tmpWall;
 extern bool isInsertingWall;
@@ -54,7 +52,7 @@ void AI_move(int timeLeft) {
 		AI_randomAction();
 #endif
 
-		if(!moveIsTimerRunout) GAME_endOfTurn();
+		GAME_endOfTurn();
 	};
 }
 
@@ -229,7 +227,6 @@ void AI_moveToken() {
 	}
 
 	GAME_move(DIR_computeFromPoints(p->r, p->c, row, col));
-	moveIsTimerRunout = false;
 }
 
 
