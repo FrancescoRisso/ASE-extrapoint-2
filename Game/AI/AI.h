@@ -19,6 +19,8 @@
 
 #define randomWeightOfPlayingLater 7
 
+#define randomWeightOfReplacingEquallyGoodWall 2
+
 #define randomWeightOfPlacingWall 3
 #define randomWeightOfMovingToken 2 * randomWeightOfPlacingWall
 

@@ -236,10 +236,15 @@ void AI_moveToken() {
 void AI_placeWall() {
 	int dist[gridSize][gridSize];
 	int row, col, bestRow, bestCol;
-	int maxDist = 0;
-	int newDist;
+	int newScore, maxScore = 0;
+	int myDist, otherDist;
+	int otherDeltaDist;
 	bool horiz, bestHoriz;
-	player p = players[(nowPlaying + 1) % 2];
+	player other = players[(nowPlaying + 1) % 2];
+	player me = players[nowPlaying];
+
+	myDist = AI_findDistFromArrival(dist, me);
+	otherDist = AI_findDistFromArrival(dist, other);
 
 	for(row = 0; row < gridSize - 1; row++) {
 		tmpWall.centerR = row;
@@ -249,9 +254,10 @@ void AI_placeWall() {
 				tmpWall.horiz = horiz;
 				if(AI_wallIsCorrect()) {
 					insertedWalls[numInsertedWalls++] = tmpWall;
-					newDist = AI_findDistFromArrival(dist, p);
-					if(newDist > maxDist) {
-						maxDist = newDist;
+					otherDeltaDist = AI_findDistFromArrival(dist, other) - otherDist;
+					newScore = otherDeltaDist * 2 - (AI_findDistFromArrival(dist, me) - myDist);
+					if(newScore > maxScore || (newScore == maxScore && AI_random(randomWeightOfReplacingEquallyGoodWall) == 0)) {
+						maxScore = newScore;
 						bestRow = row;
 						bestCol = col;
 						bestHoriz = horiz;
@@ -260,6 +266,11 @@ void AI_placeWall() {
 				}
 			}
 		}
+	}
+
+	if(maxScore <= 0) {
+		AI_moveToken();
+		return;
 	}
 
 	isInsertingWall = true;
