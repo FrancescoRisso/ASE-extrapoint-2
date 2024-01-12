@@ -198,6 +198,8 @@ void GAME_changeTurn(void) {
 		GAME_encodeSkipTurn(nowPlaying);
 	}
 
+	tmpWallIsValid = false;
+
 	GAME_resetMovements(lastP);
 
 	if(!isInsertingWall) GAME_encodePlayerMove(nowPlaying);
@@ -205,7 +207,6 @@ void GAME_changeTurn(void) {
 
 	nowPlaying = (nowPlaying + 1) % 2;
 	isInsertingWall = false;
-	tmpWallIsValid = false;
 
 	if(lastP->r == lastP->finalR) {
 		GAME_end(lastP);
