@@ -11,7 +11,7 @@
 #define randomIterations 7
 
 
-#define randomMoveWithPreviousValid 5
+#define randomMoveWithPreviousValid 4
 
 #define randomWeightOfDoingNothing 1
 #define randomWeightOfPlacingWall 3
@@ -19,7 +19,7 @@
 
 #define randomWeightOfCorrectDir 10
 #define randomWeightOfWrongDir 2
-#define randomWeightOfUselessDir 3
+#define randomWeightOfUselessDir 4
 
 #define randomMaxWallWeight 8
 
@@ -57,7 +57,7 @@ void AI_move(int timeLeft);
 	If the previous opponent's move was a valid one, tries to mirror it.
 	There is a chance that it will not mirror a move, even if it was
 	valid (in order to reduce predictability)
-	This chance is (1 / randomMoveWithPreviousValid)
+	This chance is (1 / (randomMoveWithPreviousValid + 1))
 	---------------------------------------------------------------------
 	OUTPUT:
 		- if some move was done or not
