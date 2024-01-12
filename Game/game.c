@@ -245,9 +245,10 @@ void GAME_start(void) {
 void GAME_resetMovements(player p) {
 	int i;
 
-	for(i = 0; i < DIR_none; i++)
-		if(p->availableMovement[i] != 0 && p->choosenMovement != i)
-			GAME_drawTileOffset(p->r, p->c, p->availableMovement[i], (directions) i, backgroundColor);
+	if(p->playerType == PLAYER_player)
+		for(i = 0; i < DIR_none; i++)
+			if(p->availableMovement[i] != 0 && p->choosenMovement != i)
+				GAME_drawTileOffset(p->r, p->c, p->availableMovement[i], (directions) i, backgroundColor);
 
 	switch(p->choosenMovement) {
 		case DIR_down: p->r += p->availableMovement[DIR_down]; break;
