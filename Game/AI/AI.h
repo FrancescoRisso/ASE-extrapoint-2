@@ -22,7 +22,7 @@
 #define randomWeightOfReplacingEquallyGoodWall 2
 
 #define randomWeightOfPlacingWall 3
-#define randomWeightOfMovingToken 2 * randomWeightOfPlacingWall
+#define randomWeightOfMovingToken 3 * randomWeightOfPlacingWall
 
 #define randomWeightOfCorrectDir 10
 #define randomWeightOfWrongDir 2
