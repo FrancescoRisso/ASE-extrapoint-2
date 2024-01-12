@@ -17,7 +17,8 @@
 
 #define randomMoveWithPreviousValid 4
 
-#define randomWeightOfDoingNothing 1
+#define randomWeightOfPlayingLater 7
+
 #define randomWeightOfPlacingWall 3
 #define randomWeightOfMovingToken 2 * randomWeightOfPlacingWall
 

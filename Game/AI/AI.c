@@ -41,16 +41,11 @@ int AI_random(int max) {
 
 void AI_move(int timeLeft) {
 	// don't do a move immediately
-	if(timeLeft == 19) {
-		moveIsTimerRunout = false;
-		return;
-	}
+	if(timeLeft == 19) return;
 
 	// choose randomly if the move should be done now or later in the
 	// turn (to emulate a player thinking)
-	// if this is the last second before the timer expires, however,
-	// the move is done with 100% probability
-	if(!moveIsTimerRunout && (timeLeft == 1 || AI_random(2) == 0)) {
+	if(AI_random(randomWeightOfPlayingLater) == 0) {
 #ifdef useFirstAlgorithm
 		if(!AI_tryMirroringMove()) AI_randomAction();
 #endif
@@ -100,28 +95,18 @@ bool AI_tryMirroringMove() {
 
 
 void AI_randomAction() {
-	int totWeight, randVal;
+	int randVal;
 
-	totWeight = randomWeightOfDoingNothing + randomWeightOfMovingToken - 1;
-	if(players[nowPlaying]->remainingWalls != 0) totWeight += randomWeightOfPlacingWall;
+	if(players[nowPlaying]->remainingWalls != 0) {
+		randVal = AI_random(randomWeightOfMovingToken + randomWeightOfPlacingWall - 1);
 
-	randVal = AI_random(totWeight);
-
-	if(randVal < randomWeightOfDoingNothing) {
-		moveIsTimerRunout = true;
-		return;
-	}
-
-	randVal -= randomWeightOfDoingNothing;
-
-	if(randVal < randomWeightOfMovingToken) {
+		if(randVal < randomWeightOfMovingToken) {
+			AI_moveToken();
+			return;
+		}
+		AI_placeWall();
+	} else
 		AI_moveToken();
-		return;
-	}
-
-	randVal -= randomWeightOfMovingToken;
-
-	AI_placeWall();
 }
 
 
