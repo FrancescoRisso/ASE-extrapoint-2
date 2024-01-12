@@ -9,6 +9,29 @@ extern bool isInsertingWall;
 extern player players[];
 extern int nowPlaying;
 extern int playerPositionHistoryRow[], playerPositionHistoryCol[];
+extern wallPos insertedWalls[];
+extern int numInsertedWalls;
+
+#ifdef useSecondAlgorithm
+/*
+	AI_findDistFromArrival
+	---------------------------------------------------------------------
+	Finds the minimum number of moves for a player to reach its
+	destination.
+	This is done by writing in a matrix the minimum distance to reach
+	each cell (until the final row is reached)
+	---------------------------------------------------------------------
+	PARAMETERS:
+		- dist: a matrix where the function can write the distances.
+			Passed as parameter in order for the calling function to be
+			able to read all the distances
+		- p: the player where to start
+	---------------------------------------------------------------------
+	OUTPUT:
+		- the minimum number of moves that p needs to reach its target
+*/
+int AI_findDistFromArrival(int dist[gridSize][gridSize], player p);
+#endif
 
 
 int AI_random(int max) {
@@ -28,7 +51,13 @@ void AI_move(int timeLeft) {
 	// if this is the last second before the timer expires, however,
 	// the move is done with 100% probability
 	if(!moveIsTimerRunout && (timeLeft == 1 || AI_random(2) == 0)) {
+#ifdef useFirstAlgorithm
 		if(!AI_tryMirroringMove()) AI_randomAction();
+#endif
+
+#ifdef useSecondAlgorithm
+		AI_randomAction();
+#endif
 
 		if(!moveIsTimerRunout) GAME_endOfTurn();
 	};
@@ -86,17 +115,27 @@ void AI_randomAction() {
 	randVal -= randomWeightOfDoingNothing;
 
 	if(randVal < randomWeightOfMovingToken) {
-		AI_moveRandomly();
+		AI_moveToken();
 		return;
 	}
 
 	randVal -= randomWeightOfMovingToken;
 
-	AI_randomPlaceWall();
+	AI_placeWall();
 }
 
 
-void AI_moveRandomly() {
+bool AI_wallIsCorrect() {
+	if(GAME_tmpWallOverlaps()) return false;
+	if(!GAME_checkReachability(players[0], players[1])) return false;
+	if(!GAME_checkReachability(players[1], players[0])) return false;
+
+	return true;
+}
+
+
+#ifdef useFirstAlgorithm
+void AI_moveToken() {
 	int totWeight = 0;
 	int weights[DIR_none];
 	int weightUp, weightDown;
@@ -136,15 +175,7 @@ void AI_moveRandomly() {
 }
 
 
-bool AI_wallIsCorrect() {
-	if(GAME_tmpWallOverlaps()) return false;
-	if(!GAME_checkReachability(players[0], players[1])) return false;
-	if(!GAME_checkReachability(players[1], players[0])) return false;
-
-	return true;
-}
-
-void AI_randomPlaceWall() {
+void AI_placeWall() {
 	int totWeight = 0;
 	int weights[gridSize - 1];
 	int randVal;
@@ -183,3 +214,107 @@ void AI_randomPlaceWall() {
 		}
 	}
 }
+#endif
+
+
+#ifdef useSecondAlgorithm
+void AI_moveToken() {
+	int dist[gridSize][gridSize];
+	int row, col, minDist;
+	player p = players[nowPlaying];
+	player_t tmpPlayer;
+
+	minDist = AI_findDistFromArrival(dist, p);
+	row = p->finalR;
+
+	// find the arrival cell
+	for(col = 0; col < gridSize; col++)
+		if(dist[row][col] == minDist) break;
+
+	// follow the backwards path: minDist == 1 is the current player pos (which is not evaluated by the cycle)
+	for(minDist--; minDist != 1; minDist--) {
+		tmpPlayer.r = row;
+		tmpPlayer.c = col;
+		if(--row != -1 && dist[row][col] == minDist && GAME_findMovementDir(&tmpPlayer, DIR_up, &tmpPlayer)) continue;                   // check up
+		if(++row != -1 && --col != -1 && dist[row][col] == minDist && GAME_findMovementDir(&tmpPlayer, DIR_left, &tmpPlayer)) continue;  // check left
+		if(++col != -1 && ++row != gridSize && dist[row][col] == minDist && GAME_findMovementDir(&tmpPlayer, DIR_down, &tmpPlayer))
+			continue;  // check down
+		if(--row != -1 && ++col != gridSize && dist[row][col] == minDist && GAME_findMovementDir(&tmpPlayer, DIR_right, &tmpPlayer))
+			continue;  // check right
+	}
+
+	GAME_move(DIR_computeFromPoints(p->r, p->c, row, col));
+	moveIsTimerRunout = false;
+}
+
+
+void AI_placeWall() {
+	int dist[gridSize][gridSize];
+	int row, col, bestRow, bestCol;
+	int maxDist = 0;
+	int newDist;
+	bool horiz, bestHoriz;
+	player p = players[(nowPlaying + 1) % 2];
+
+	for(row = 0; row < gridSize - 1; row++) {
+		tmpWall.centerR = row;
+		for(col = 0; col < gridSize - 1; col++) {
+			tmpWall.centerC = col;
+			for(horiz = false; horiz < 2; horiz++) {
+				tmpWall.horiz = horiz;
+				if(AI_wallIsCorrect()) {
+					insertedWalls[numInsertedWalls++] = tmpWall;
+					newDist = AI_findDistFromArrival(dist, p);
+					if(newDist > maxDist) {
+						maxDist = newDist;
+						bestRow = row;
+						bestCol = col;
+						bestHoriz = horiz;
+					}
+					numInsertedWalls--;
+				}
+			}
+		}
+	}
+
+	isInsertingWall = true;
+	tmpWall.centerR = bestRow;
+	tmpWall.centerC = bestCol;
+	tmpWall.horiz = bestHoriz;
+}
+
+
+int AI_findDistFromArrival(int dist[gridSize][gridSize], player p) {
+	int r, c;
+	player_t tmpPlayer;
+	int curDist = 0;
+	bool pathFound = false;
+
+	for(r = 0; r < gridSize; r++)
+		for(c = 0; c < gridSize; c++) dist[r][c] = 0;
+
+	dist[p->r][p->c] = 1;
+
+	for(curDist = 1; !pathFound; curDist++) {
+		for(r = 0; r < gridSize && !pathFound; r++) {
+			for(c = 0; c < gridSize && !pathFound; c++) {
+				if(dist[r][c] == curDist) {
+					if(r == p->finalR)
+						pathFound = true;
+					else {
+						tmpPlayer.r = r;
+						tmpPlayer.c = c;
+
+						if(dist[r - 1][c] == 0 && GAME_findMovementDir(&tmpPlayer, DIR_up, &tmpPlayer)) dist[r - 1][c] = curDist + 1;
+						if(dist[r + 1][c] == 0 && GAME_findMovementDir(&tmpPlayer, DIR_down, &tmpPlayer)) dist[r + 1][c] = curDist + 1;
+						if(dist[r][c - 1] == 0 && GAME_findMovementDir(&tmpPlayer, DIR_left, &tmpPlayer)) dist[r][c - 1] = curDist + 1;
+						if(dist[r][c + 1] == 0 && GAME_findMovementDir(&tmpPlayer, DIR_right, &tmpPlayer)) dist[r][c + 1] = curDist + 1;
+					}
+				}
+			}
+		}
+	}
+
+	return curDist - 1;
+}
+#endif

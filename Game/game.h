@@ -251,4 +251,18 @@ bool GAME_tmpWallOverlaps(void);
 bool GAME_checkReachability(player p, player other);
 
 
+/*
+	GAME_findMovementDir
+	---------------------------------------------------------------------
+	Computes how much should a player move, if he moves in a given
+	direction
+	---------------------------------------------------------------------
+	PARAMETERS:
+		- p: the player
+		- dir: the chosen direction
+		- other: the opponent (that may need to be jumped)
+*/
+int GAME_findMovementDir(player p, directions dir, player other);
+
+
 #endif

@@ -8,6 +8,10 @@
 #include "lpc17xx.h"
 
 
+// #define useFirstAlgorithm
+#define useSecondAlgorithm
+
+
 #define randomIterations 7
 
 
@@ -75,11 +79,11 @@ void AI_randomAction(void);
 
 
 /*
-	AI_moveRandomly
+	AI_moveToken
 	---------------------------------------------------------------------
-	Selects a (valid) random move of the token and executes it
+	Selects a valid move of the token and executes it
 */
-void AI_moveRandomly(void);
+void AI_moveToken(void);
 
 
 /*
@@ -95,12 +99,12 @@ bool AI_wallIsCorrect(void);
 
 
 /*
-	AI_randomPlaceWall
+	AI_placeWall
 	---------------------------------------------------------------------
-	Selects a (valid) random wall position and places it
+	Selects a valid wall position and places it
 	WARNING: it supposes the player still has walls available
 */
-void AI_randomPlaceWall(void);
+void AI_placeWall(void);
 
 
 #endif
