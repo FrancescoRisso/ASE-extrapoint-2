@@ -406,6 +406,8 @@ void GAME_init(void) {
 
 	numInsertedWalls = 0;
 
+	srand(LPC_RIT->RICOUNTER);
+
 	GAME_drawEmptyGrid();
 	GAME_initPlayers();
 	GAME_drawGameTexts();

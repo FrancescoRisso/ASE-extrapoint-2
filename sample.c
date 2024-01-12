@@ -40,8 +40,6 @@ int main(void) {
 
 	CAN_Init();
 
-	srand(time(NULL));
-
 	init_RIT(TIME_50MS);
 	enable_RIT();
 
