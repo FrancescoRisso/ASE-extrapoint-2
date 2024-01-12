@@ -86,8 +86,8 @@ directions DIR_computeFromPoints(int startR, int startC, int endR, int endC) {
 	if(startR > endR) vert = DIR_up;
 	if(startR < endR) vert = DIR_down;
 
-	if(startC > endC) vert = DIR_left;
-	if(startC < endC) vert = DIR_right;
+	if(startC > endC) horiz = DIR_left;
+	if(startC < endC) horiz = DIR_right;
 
 	return DIR_sum(horiz, vert);
 }

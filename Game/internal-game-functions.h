@@ -70,18 +70,6 @@ void GAME_drawTileOffset(int baseR, int baseC, int offset, directions dir, int c
 */
 void GAME_resetMovements(player p);
 
-/*
-	GAME_findMovements
-	---------------------------------------------------------------------
-	Computes which movements a player can do, writes it to its
-	availableMovement array and colors the corresponding tiles
-	---------------------------------------------------------------------
-	PARAMETERS:
-		- p: the player
-		- other: the opponent (that may need to be jumped)
-*/
-void GAME_findMovements(player p, player other);
-
 
 /*
 	GAME_end

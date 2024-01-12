@@ -214,7 +214,7 @@ void GAME_changeTurn(void) {
 	}
 	GAME_drawNewTimer(nowPlaying);
 
-	if(players[nowPlaying]->playerType != PLAYER_otherBoard) GAME_findMovements(players[nowPlaying], lastP);
+	if(players[nowPlaying]->playerType != PLAYER_otherBoard) GAME_findMovements(players[nowPlaying], lastP, true);
 
 	for(i = 1; i < playerPositionHistoryCnt; i++) {
 		playerPositionHistoryRow[i - 1] = playerPositionHistoryRow[i];
@@ -280,18 +280,18 @@ void GAME_resetMovements(player p) {
 }
 
 
-void GAME_findMovements(player p, player other) {
+void GAME_findMovements(player p, player other, bool draw) {
 	directions dir = DIR_down;
 	int res;
 
 	for(dir = (directions) 0; dir < 4; dir++) {
 		res = GAME_findMovementDir(p, dir, other);
 		p->availableMovement[dir] = res;
-		if(res && p->playerType == PLAYER_player) GAME_drawTileOffset(p->r, p->c, res, dir, availableMoveColor);
+		if(res && p->playerType == PLAYER_player && draw) GAME_drawTileOffset(p->r, p->c, res, dir, availableMoveColor);
 	}
 
 	for(; dir < DIR_none; dir++) {
-		if(p->availableMovement[dir] && p->playerType == PLAYER_player) GAME_drawTileOffset(p->r, p->c, 1, dir, availableMoveColor);
+		if(p->availableMovement[dir] && p->playerType == PLAYER_player && draw) GAME_drawTileOffset(p->r, p->c, 1, dir, availableMoveColor);
 	}
 }
 

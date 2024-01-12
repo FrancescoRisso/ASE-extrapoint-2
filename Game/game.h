@@ -265,4 +265,18 @@ bool GAME_checkReachability(player p, player other);
 int GAME_findMovementDir(player p, directions dir, player other);
 
 
+/*
+	GAME_findMovements
+	---------------------------------------------------------------------
+	Computes which movements a player can do, writes it to its
+	availableMovement array and colors the corresponding tiles
+	---------------------------------------------------------------------
+	PARAMETERS:
+		- p: the player
+		- other: the opponent (that may need to be jumped)
+		- draw: if the cells should also be colored
+*/
+void GAME_findMovements(player p, player other, bool draw);
+
+
 #endif

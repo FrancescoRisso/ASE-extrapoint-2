@@ -239,8 +239,10 @@ void AI_placeWall() {
 	bool horiz, bestHoriz;
 	player other = players[(nowPlaying + 1) % 2];
 	player me = players[nowPlaying];
+	directions dir;
 
 	myDist = AI_findDistFromArrival(dist, me);
+	GAME_findMovements(other, me, false);
 	otherDist = AI_findDistFromArrival(dist, other);
 
 	for(row = 0; row < gridSize - 1; row++) {
@@ -265,6 +267,8 @@ void AI_placeWall() {
 		}
 	}
 
+	for(dir = (directions) 0; dir < DIR_none; dir++) other->availableMovement[dir] = 0;
+
 	if(maxScore <= 0) {
 		AI_moveToken();
 		return;
@@ -286,9 +290,21 @@ int AI_findDistFromArrival(int dist[gridSize][gridSize], player p) {
 	for(r = 0; r < gridSize; r++)
 		for(c = 0; c < gridSize; c++) dist[r][c] = 0;
 
-	dist[p->r][p->c] = 1;
+	r = p->r;
+	c = p->c;
 
-	for(curDist = 1; !pathFound; curDist++) {
+	dist[r][c] = 1;
+
+	if(p->availableMovement[DIR_up]) dist[r - 1][c] = 2;
+	if(p->availableMovement[DIR_down]) dist[r + 1][c] = 2;
+	if(p->availableMovement[DIR_left]) dist[r][c - 1] = 2;
+	if(p->availableMovement[DIR_right]) dist[r][c + 1] = 2;
+	if(p->availableMovement[DIR_up_left]) dist[r - 1][c - 1] = 2;
+	if(p->availableMovement[DIR_up_right]) dist[r - 1][c + 1] = 2;
+	if(p->availableMovement[DIR_down_left]) dist[r + 1][c - 1] = 2;
+	if(p->availableMovement[DIR_down_right]) dist[r + 1][c + 1] = 2;
+
+	for(curDist = 2; !pathFound; curDist++) {
 		for(r = 0; r < gridSize && !pathFound; r++) {
 			for(c = 0; c < gridSize && !pathFound; c++) {
 				if(dist[r][c] == curDist) {
