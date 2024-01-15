@@ -29,6 +29,9 @@ extern gameStatuses gameStatus;
  *----------------------------------------------------------------------------*/
 void CAN_IRQHandler(void) {
 	int msg;
+
+	if((LPC_CAN1->GSR & 1) == 0) return;
+
 	msg = CAN_rdMsg();        /* Read the message */
 	LPC_CAN1->CMR = (1 << 2); /* Release receive buffer */
 

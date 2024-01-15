@@ -151,6 +151,8 @@ int CAN_rdMsg() {
 		return pCAN->RDA;
 	}
 
+	pCAN->CMR = 4;
+
 	return 0;
 }
 
