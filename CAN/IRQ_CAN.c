@@ -36,6 +36,8 @@ void CAN_IRQHandler(void) {
 		myID = 1;
 		GAME_twoBoardGame(false);
 		handshakeDone = true;
+		gameStatus = GAME_AIorPlayer;
+		MENU_playerTypeMenu();
 		CAN_wrMsg(1 << 24);
 		return;
 	}
