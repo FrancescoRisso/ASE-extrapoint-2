@@ -17,12 +17,12 @@
 
 #define randomMoveWithPreviousValid 4
 
-#define randomWeightOfPlayingLater 7
+#define randomWeightOfPlayingLater 6
 
 #define randomWeightOfReplacingEquallyGoodWall 2
 
 #define randomWeightOfPlacingWall 3
-#define randomWeightOfMovingToken 3 * randomWeightOfPlacingWall
+#define randomWeightOfMovingToken 5
 
 #define randomWeightOfCorrectDir 10
 #define randomWeightOfWrongDir 2
