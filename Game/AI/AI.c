@@ -266,7 +266,6 @@ void AI_placeWall() {
 		}
 	}
 
-	for(dir = (directions) 0; dir < DIR_none; dir++) other->availableMovement[dir] = 0;
 
 	if(maxScore <= 0) {
 		AI_moveToken();
