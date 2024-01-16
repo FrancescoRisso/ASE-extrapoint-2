@@ -24,11 +24,12 @@ extern int numInsertedWalls;
 			Passed as parameter in order for the calling function to be
 			able to read all the distances
 		- p: the player where to start
+		- p: the opponent
 	---------------------------------------------------------------------
 	OUTPUT:
 		- the minimum number of moves that p needs to reach its target
 */
-int AI_findDistFromArrival(int dist[gridSize][gridSize], player p);
+int AI_findDistFromArrival(int dist[gridSize][gridSize], player p, player other);
 #endif
 
 
@@ -207,7 +208,7 @@ void AI_moveToken() {
 	player p = players[nowPlaying];
 	player_t tmpPlayer;
 
-	minDist = AI_findDistFromArrival(dist, p);
+	minDist = AI_findDistFromArrival(dist, p, players[(nowPlaying + 1) % 2]);
 	row = p->finalR;
 
 	// find the arrival cell
@@ -239,11 +240,9 @@ void AI_placeWall() {
 	bool horiz, bestHoriz;
 	player other = players[(nowPlaying + 1) % 2];
 	player me = players[nowPlaying];
-	directions dir;
 
-	myDist = AI_findDistFromArrival(dist, me);
-	GAME_findMovements(other, me, false);
-	otherDist = AI_findDistFromArrival(dist, other);
+	myDist = AI_findDistFromArrival(dist, me, other);
+	otherDist = AI_findDistFromArrival(dist, other, me);
 
 	for(row = 0; row < gridSize - 1; row++) {
 		tmpWall.centerR = row;
@@ -253,8 +252,8 @@ void AI_placeWall() {
 				tmpWall.horiz = horiz;
 				if(AI_wallIsCorrect()) {
 					insertedWalls[numInsertedWalls++] = tmpWall;
-					otherDeltaDist = AI_findDistFromArrival(dist, other) - otherDist;
-					newScore = otherDeltaDist * 2 - (AI_findDistFromArrival(dist, me) - myDist);
+					otherDeltaDist = AI_findDistFromArrival(dist, other, me) - otherDist;
+					newScore = otherDeltaDist * 4 - 5 * (AI_findDistFromArrival(dist, me, other) - myDist);
 					if(newScore > maxScore || (newScore == maxScore && AI_random(randomWeightOfReplacingEquallyGoodWall) == 0)) {
 						maxScore = newScore;
 						bestRow = row;
@@ -281,11 +280,13 @@ void AI_placeWall() {
 }
 
 
-int AI_findDistFromArrival(int dist[gridSize][gridSize], player p) {
+int AI_findDistFromArrival(int dist[gridSize][gridSize], player p, player other) {
 	int r, c;
 	player_t tmpPlayer;
 	int curDist = 0;
 	bool pathFound = false;
+
+	GAME_findMovements(p, other, false);
 
 	for(r = 0; r < gridSize; r++)
 		for(c = 0; c < gridSize; c++) dist[r][c] = 0;
