@@ -5,6 +5,7 @@ directions choosenOption = DIR_none;
 
 extern gameStatuses gameStatus;
 extern bool dualBoard;
+extern int myID;
 
 /*
 	MENU_draw
@@ -83,9 +84,10 @@ void MENU_confirmChoice() {
 
 	switch(gameStatus) {
 		case GAME_chooseNumBoards:
-			if(choosenOption == DIR_down)
+			if(choosenOption == DIR_down) {
 				GAME_twoBoardGame(true);
-			else {
+				myID = 0;
+			} else {
 				GAME_oneBoardGame();
 				gameStatus = GAME_AIorPlayer;
 			}

@@ -779,7 +779,6 @@ void GAME_oneBoardGame() {
 
 void GAME_twoBoardGame(bool send) {
 	dualBoard = true;
-	myID = 0;
 	if(send) {
 		CAN_wrMsg(1);
 		TIMER_setValue(TIMER_1, TIMER_matchReg0, 25000000, TIMER_stop_reset_interrupt);
