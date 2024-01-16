@@ -436,8 +436,8 @@ void GAME_init(void) {
 	GAME_initPlayers();
 	GAME_drawGameTexts();
 
-	NVIC_SetPriority(RIT_IRQn, 2);
-	NVIC_SetPriority(TIMER0_IRQn, 1);
+	NVIC_SetPriority(RIT_IRQn, 0);
+	NVIC_SetPriority(TIMER0_IRQn, 0);
 
 	TIMER_setValue(TIMER_0, TIMER_matchReg0, 25000000, TIMER_reset_interrupt);
 
