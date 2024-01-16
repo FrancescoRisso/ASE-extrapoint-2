@@ -95,17 +95,27 @@ bool AI_tryMirroringMove() {
 
 void AI_randomAction() {
 	int randVal;
+	int dist[gridSize][gridSize];
+	int myDist, otherDist;
+	directions dir;
+	player other = players[(nowPlaying + 1) % 2];
 
 	if(players[nowPlaying]->remainingWalls != 0) {
-		randVal = AI_random(randomWeightOfMovingToken + randomWeightOfPlacingWall - 1);
+		myDist = AI_findDistFromArrival(dist, players[nowPlaying], other) - 2;
 
-		if(randVal < randomWeightOfMovingToken) {
+		otherDist = AI_findDistFromArrival(dist, other, players[nowPlaying]) - 2;
+
+		randVal = AI_random(myDist * 3 + otherDist * 2 - 1);
+
+		if(randVal < (otherDist * 2)) {
 			AI_moveToken();
 			return;
 		}
 		AI_placeWall();
 	} else
 		AI_moveToken();
+
+	for(dir = (directions) 0; dir < DIR_none; dir++) other->availableMovement[dir] = 0;
 }
 
 
