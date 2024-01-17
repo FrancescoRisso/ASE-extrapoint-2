@@ -514,7 +514,7 @@ void GAME_encodeSkipTurn(int playerID) {
 
 	lastMove = res;
 
-	if(dualBoard && playerID == myID) CAN_wrMsg(res);
+	if(dualBoard && playerID == myID && !isFirstMove) CAN_wrMsg(res);
 }
 
 
