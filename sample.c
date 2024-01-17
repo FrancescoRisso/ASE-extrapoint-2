@@ -44,6 +44,11 @@ int main(void) {
 	init_RIT(TIME_50MS);
 	enable_RIT();
 
+#ifndef DEBUG_avoidRandom
+	TIMER_enable(TIMER_2);
+	TIMER_setValue(TIMER_2, TIMER_matchReg0, 1234567890, TIMER_reset);
+#endif
+
 #ifdef DEBUG_skipMenu
 	GAME_init();
 #else

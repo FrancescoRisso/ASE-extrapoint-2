@@ -426,7 +426,8 @@ void GAME_init(void) {
 #ifdef DEBUG_avoidRandom
 	srand(1);
 #else
-	srand(LPC_RIT->RICOUNTER);
+	srand(LPC_TIM2->TC);
+	TIMER_disable(TIMER_2);
 #endif
 
 #ifndef DEBUG_skipGrid
