@@ -261,7 +261,6 @@ void GAME_start(void) {
 	key1Enabled = true;
 	nowPlaying = 1;
 	GAME_changeTurn();
-	TIMER_enable(TIMER_0);
 }
 
 
