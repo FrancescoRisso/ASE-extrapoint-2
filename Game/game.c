@@ -815,6 +815,8 @@ void GAME_execEncodedMove(int move) {
 
 	decodeMove();
 
+	if(playerID != nowPlaying) return;
+
 	p = players[playerID];
 
 	if(isValid) {
