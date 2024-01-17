@@ -33,15 +33,17 @@ volatile bool key2Enabled = false;
 
 extern gameStatuses gameStatus;
 
+directions lastDir = DIR_none;
+
 void RIT_IRQHandler(void) {
 	bool joyUp, joyDown, joyLeft, joyRight;
 	directions dir;
 
 	if(joystickEnabled) {
-		joyUp = (bool) (JOY_updateStatus(JOY_up) == JOY_press);
-		joyDown = (bool) (JOY_updateStatus(JOY_down) == JOY_press);
-		joyLeft = (bool) (JOY_updateStatus(JOY_left) == JOY_press);
-		joyRight = (bool) (JOY_updateStatus(JOY_right) == JOY_press);
+		joyUp = (bool) (JOY_updateStatus(JOY_up) != JOY_release);
+		joyDown = (bool) (JOY_updateStatus(JOY_down) != JOY_release);
+		joyLeft = (bool) (JOY_updateStatus(JOY_left) != JOY_release);
+		joyRight = (bool) (JOY_updateStatus(JOY_right) != JOY_release);
 
 		switch(gameStatus) {
 			case GAME_chooseNumBoards:
@@ -55,7 +57,8 @@ void RIT_IRQHandler(void) {
 				if(joyDown) dir = DIR_sum(dir, DIR_down);
 				if(joyLeft) dir = DIR_sum(dir, DIR_left);
 				if(joyRight) dir = DIR_sum(dir, DIR_right);
-				if(dir != DIR_none) GAME_move(dir);
+				if(dir != DIR_none && dir != lastDir) GAME_move(dir);
+				lastDir = dir;
 				break;
 		}
 
