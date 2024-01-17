@@ -100,6 +100,8 @@ void AI_randomAction() {
 	directions dir;
 	player other = players[(nowPlaying + 1) % 2];
 
+	TIMER_disable(TIMER_0);
+
 	if(players[nowPlaying]->remainingWalls != 0) {
 		myDist = AI_findDistFromArrival(dist, players[nowPlaying], other) - 2;
 
