@@ -68,9 +68,13 @@ void GAME_drawTile(int r, int c, int color) {
 void GAME_initPlayers() {
 	player p;
 
+#ifndef DEBUG_invertPositions
 	players[1]->r = players[0]->finalR = 0;
 	players[0]->r = players[1]->finalR = gridSize - 1;
-
+#else
+	players[0]->r = players[1]->finalR = 0;
+	players[1]->r = players[0]->finalR = gridSize - 1;
+#endif
 	players[0]->c = players[1]->c = gridSize / 2;
 
 	players[0]->choosenMovement = players[1]->choosenMovement = DIR_none;

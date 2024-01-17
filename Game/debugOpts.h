@@ -9,6 +9,7 @@
 // #define DEBUG_skipGrid
 // #define DEBUG_redIsAI
 // #define DEBUG_blueIsAI
+// #define DEBUG_invertPositions
 
 
 #endif
