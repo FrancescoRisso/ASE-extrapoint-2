@@ -58,7 +58,7 @@
 	int playerID;                               \
 	int posX, posY;                             \
 	bool isValid, isWall, vert;                 \
-	playerID = move & 0xFF000000;               \
+	playerID = (move & 0xFF000000) >> 24;       \
 	isWall = (bool) ((move & 0x00F00000) != 0); \
 	vert = (bool) ((move & 0x000F0000) == 0);   \
 	isValid = (bool) !((!isWall) && (!vert));   \
