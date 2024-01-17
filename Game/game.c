@@ -7,6 +7,7 @@
 #include "internal-game-functions.h"
 
 
+bool isFirstMove = true;
 bool isFirstGame = true;
 
 player_t playersData[2];
@@ -249,6 +250,8 @@ void GAME_changeTurn(void) {
 		joystickEnabled = key1Enabled = false;
 
 	GAME_continueTimersAndRIT();
+
+	isFirstMove = false;
 }
 
 
