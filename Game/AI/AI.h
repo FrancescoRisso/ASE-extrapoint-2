@@ -17,7 +17,7 @@
 
 #define randomMoveWithPreviousValid 4
 
-#define randomWeightOfPlayingLater 6
+#define randomWeightOfPlayingLater 4
 
 #define randomWeightOfReplacingEquallyGoodWall 2
 
