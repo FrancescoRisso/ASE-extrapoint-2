@@ -805,6 +805,7 @@ void GAME_setPlayerType(bool isHuman) {
 	}
 
 	ready = true;
+	joystickEnabled = false;
 	if(otherPlayerReady) GAME_init();
 }
 
