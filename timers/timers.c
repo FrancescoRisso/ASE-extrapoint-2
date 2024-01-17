@@ -30,18 +30,18 @@ void myTimer3handler() {}
 
 // please do not edit these
 void TIMER0_IRQHandler(void) {
-	myTimer0handler();
 	myNVIC_clearInterrupt(myNVIC_timer0);
+	myTimer0handler();
 }
 
 void TIMER1_IRQHandler(void) {
-	myTimer1handler();
 	myNVIC_clearInterrupt(myNVIC_timer1);
+	myTimer1handler();
 }
 
 void TIMER2_IRQHandler(void) {
-	myTimer2handler();
 	myNVIC_clearInterrupt(myNVIC_timer2);
+	myTimer2handler();
 }
 
 void TIMER3_IRQHandler(void) {
